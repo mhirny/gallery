@@ -1,13 +1,28 @@
 $panel-opacity:             0.85;
 
 /* GLOBAL PLACEHOLDER SELECTORS */
-%bg-image {
+%bg-img-home {
   position:                 relative;
   opacity:                  0.70;
   background-position:      center;
   background-size:          cover;
   background-repeat:        no-repeat;
   background-attachment:    fixed;
+}
+
+%bg-img-gallery {
+  position:                 relative;
+  #bg {
+    position:               absolute;
+    top:                    0;
+    left:                   0;
+    height:                 100%;
+    width:                  100%;
+    background:             url('../img/bg/rain_bg.jpg') no-repeat center center fixed;
+    background-size:        cover;
+    opacity:                0.30;
+    filter:                 blur(4px) brightness(65%);
+  }
 }
 
 %flexbox-center-vertical {
@@ -18,7 +33,7 @@ $panel-opacity:             0.85;
 }
 
 %fat-text {
-  color:                  #000;
+  color:                    #000;
   font-size:                27px;
   letter-spacing:           8px;
   font-weight:              900;
@@ -39,16 +54,31 @@ body {
   margin:0;
   padding:0;
   height:                   100%;
-  background:             #f4f4f4;
+  background:               #f4f4f4;
 }
 
 /* NAVBAR */
-nav .navbar-brand {
-  padding-top:              0;
-  padding-bottom:           0;
-  img {
-    height:                 100%;
-    opacity:                0.7;
+nav {
+  .navbar-brand {
+    padding-top:            0;
+    padding-bottom:         0;
+    img {
+      height:               100%;
+      opacity:              0.7;
+    }
+  }
+  .nav{
+    li {
+      @extend               .text-center;
+      min-width:            100px;
+      &:hover {
+        background:         linear-gradient(to bottom right, $navbar-default-bg 25%, darken($navbar-default-bg, 6.5%) 100%);
+        //border-radius: 5px;
+        //background: linear-gradient(to bottom right, $navbar-default-bg 25%, darken($navbar-default-bg, 20.5%) 75%, $navbar-default-bg 100%);
+        //background: radial-gradient(darken($navbar-default-bg, 6.5%), $navbar-default-bg);
+        // background: linear-gradient(to bottom right, darken($navbar-default-bg, 4.5%), $navbar-default-bg);
+      }
+    }
   }
 }
 
@@ -57,22 +87,22 @@ main#home-page {
   font-size:                16px;
   font-weight:              600;
   #bgmain-top {
-    @extend                 %bg-image, %flexbox-center-vertical;
+    @extend                 %bg-img-home, %flexbox-center-vertical;
     height:                 calc(100vh - #{$navbar-height});
     background-image:       url('../img/bg/bgmain.jpg');
   }
   #bg1 {
-    @extend                 %bg-image, %flexbox-center-vertical;
+    @extend                 %bg-img-home, %flexbox-center-vertical;
     background-image:       url('../img/bg/bg1.jpg');
     min-height:             400px;
   }
   #bg2 {
-    @extend                 %bg-image, %flexbox-center-vertical;
+    @extend                 %bg-img-home, %flexbox-center-vertical;
     background-image:       url('../img/bg/bg2.jpg');
     min-height:             400px;
   }
   #bgmain-bottom {
-    @extend                 %bg-image, %flexbox-center-vertical;
+    @extend                 %bg-img-home, %flexbox-center-vertical;
     height:                 100vh;
     background-image:       url('../img/bg/bgmain.jpg');
     .panel {
@@ -96,17 +126,9 @@ main#home-page {
 
 /* CARS PAGE */
 main#cars-page {
-  position: relative;
-#bg {
-  position:                 absolute;
-  top:                      0;
-  left:                     0;
-  height:                   100%;
-  width:                    100%;
-  background:               url('../img/bg/vehicles_bg.jpg') no-repeat center center fixed; 
-  background-size:          cover;
-  opacity:                  0.30;
-  filter:                   blur(4px) brightness(65%);
+  @extend %bg-img-gallery;
+  #bg {
+    background:             url('../img/bg/vehicles_bg.jpg') no-repeat center center fixed;
   }
 
   .row {
@@ -133,17 +155,9 @@ main#cars-page {
 
 /* ART PAGE */
 main#art-page {
-  position: relative;
-#bg {
-  position:                 absolute;
-  top:                      0;
-  left:                     0;
-  height:                   100%;
-  width:                    100%;
-  background:               url('../img/bg/rain_bg.jpg') no-repeat center center fixed; 
-  background-size:          cover;
-  opacity:                  0.30;
-  filter:                   blur(4px) brightness(65%);
+  @extend %bg-img-gallery;
+  #bg {
+    background:             url('../img/bg/rain_bg.jpg') no-repeat center center fixed;
   }
 
   .row {
@@ -175,6 +189,6 @@ main#art-page {
     font-size:              50px;
   }
   p {
-    color:                red;
+    color:                  red;
   }
 }

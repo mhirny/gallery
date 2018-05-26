@@ -1250,7 +1250,7 @@ mark,
 .text-right {
   text-align: right; }
 
-.text-center {
+.text-center, nav .nav li {
   text-align: center; }
 
 .text-justify {
@@ -5808,6 +5808,19 @@ main#home-page #bgmain-top, main#home-page #bg1, main#home-page #bg2, main#home-
   background-repeat: no-repeat;
   background-attachment: fixed; }
 
+main#cars-page, main#art-page {
+  position: relative; }
+  main#cars-page #bg, main#art-page #bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: url("../img/bg/rain_bg.jpg") no-repeat center center fixed;
+    background-size: cover;
+    opacity: 0.30;
+    filter: blur(4px) brightness(65%); }
+
 main#home-page #bgmain-top, main#home-page #bg1, main#home-page #bg2, main#home-page #bgmain-bottom {
   flex-direction: column;
   display: flex;
@@ -5841,6 +5854,10 @@ nav .navbar-brand {
   nav .navbar-brand img {
     height: 100%;
     opacity: 0.7; }
+nav .nav li {
+  min-width: 100px; }
+  nav .nav li:hover {
+    background: linear-gradient(to bottom right, #f8f8f8 25%, #e7e7e7 100%); }
 
 /* HOME PAGE */
 main#home-page {
@@ -5865,52 +5882,32 @@ main#home-page {
       padding: 5px 0 10px 0; }
 
 /* CARS PAGE */
-main#cars-page {
-  position: relative; }
-  main#cars-page #bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: url("../img/bg/vehicles_bg.jpg") no-repeat center center fixed;
-    background-size: cover;
-    opacity: 0.30;
-    filter: blur(4px) brightness(65%); }
-  main#cars-page .row {
-    padding-top: 20px; }
-    main#cars-page .row .panel .panel-heading {
-      padding: 5px; }
-      main#cars-page .row .panel .panel-heading h2 {
-        margin: 5px 0 10px 20px; }
-      main#cars-page .row .panel .panel-heading img {
-        margin: 0px; }
-    main#cars-page .row .panel .panel-footer p {
-      margin: 0; }
+main#cars-page #bg {
+  background: url("../img/bg/vehicles_bg.jpg") no-repeat center center fixed; }
+main#cars-page .row {
+  padding-top: 20px; }
+  main#cars-page .row .panel .panel-heading {
+    padding: 5px; }
+    main#cars-page .row .panel .panel-heading h2 {
+      margin: 5px 0 10px 20px; }
+    main#cars-page .row .panel .panel-heading img {
+      margin: 0px; }
+  main#cars-page .row .panel .panel-footer p {
+    margin: 0; }
 
 /* ART PAGE */
-main#art-page {
-  position: relative; }
-  main#art-page #bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background: url("../img/bg/rain_bg.jpg") no-repeat center center fixed;
-    background-size: cover;
-    opacity: 0.30;
-    filter: blur(4px) brightness(65%); }
-  main#art-page .row {
-    padding-top: 20px; }
-    main#art-page .row .panel .panel-heading {
-      padding: 5px; }
-      main#art-page .row .panel .panel-heading h2 {
-        margin: 5px 0 10px 20px; }
-      main#art-page .row .panel .panel-heading img {
-        margin: 0px; }
-    main#art-page .row .panel .panel-footer p {
-      margin: 0; }
+main#art-page #bg {
+  background: url("../img/bg/rain_bg.jpg") no-repeat center center fixed; }
+main#art-page .row {
+  padding-top: 20px; }
+  main#art-page .row .panel .panel-heading {
+    padding: 5px; }
+    main#art-page .row .panel .panel-heading h2 {
+      margin: 5px 0 10px 20px; }
+    main#art-page .row .panel .panel-heading img {
+      margin: 0px; }
+  main#art-page .row .panel .panel-footer p {
+    margin: 0; }
 
 /* Is this good to use?? */
 .section-text2 h2 {
