@@ -27,7 +27,7 @@
       <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav">
           <li><a href="index.php">Home</a></li>
-          <li><a href="cars.php">Cars</a></li>
+          <li><a href="vehicles.php">Vehicles</a></li>
           <li class="active"><a href="art.php">Art <span class="sr-only">(current)</span></a></li>
         </ul>
 
@@ -82,7 +82,9 @@ echo '
 
             $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
 
-            $sql = 'SELECT * FROM pictures WHERE tag = "art";';
+            $sql = 'SELECT pictures.name, pictures.location, pictures.description, pictures.price
+              FROM pictures, tags
+              WHERE tags.tag = "art" AND pictures.picID = tags.picID;';
             $result = mysqli_query($conn, $sql);
 
             if (mysqli_num_rows($result) > 0) {

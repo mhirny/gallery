@@ -27,7 +27,7 @@
       <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav">
           <li class="active"><a href="index.php">Home <span class="sr-only">(current)</span></a></li>
-          <li><a href="cars.php">Cars</a></li>
+          <li><a href="vehicles.php">Vehicles</a></li>
           <li><a href="art.php">Art</a></li>
         </ul>
 

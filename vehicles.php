@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gallery | Cars</title>
+  <title>Gallery | Vehicles</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -27,7 +27,7 @@
       <div class="collapse navbar-collapse" id="navbar-collapse">
         <ul class="nav navbar-nav">
           <li><a href="index.php">Home</a></li>
-          <li class="active"><a href="cars.php">Cars <span class="sr-only">(current)</span></a></li>
+          <li class="active"><a href="vehicles.php">Vehicles <span class="sr-only">(current)</span></a></li>
           <li><a href="art.php">Art</a></li>
         </ul>
 
@@ -68,7 +68,7 @@ echo '
 
 <!-- MAIN -->
 
-  <main id="cars-page">
+  <main id="vehicles-page">
     <div id="bg"></div>
     <div class="container">
       <div class="row">
@@ -82,7 +82,9 @@ echo '
 
             $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
 
-            $sql = 'SELECT * FROM pictures WHERE tag = "vehicle";';
+            $sql = 'SELECT pictures.name, pictures.location, pictures.description, pictures.price
+            FROM pictures, tags
+            WHERE tags.tag = "vehicle" AND pictures.picID = tags.picID;';
             $result = mysqli_query($conn, $sql);
 
             if (mysqli_num_rows($result) > 0) {

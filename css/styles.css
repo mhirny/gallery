@@ -5808,9 +5808,9 @@ main#home-page #bgmain-top, main#home-page #bg1, main#home-page #bg2, main#home-
   background-repeat: no-repeat;
   background-attachment: fixed; }
 
-main#cars-page, main#art-page {
+main#vehicles-page, main#art-page {
   position: relative; }
-  main#cars-page #bg, main#art-page #bg {
+  main#vehicles-page #bg, main#art-page #bg {
     position: absolute;
     top: 0;
     left: 0;
@@ -5881,18 +5881,18 @@ main#home-page {
     main#home-page .section-text p {
       padding: 5px 0 10px 0; }
 
-/* CARS PAGE */
-main#cars-page #bg {
+/* VEHICLES PAGE */
+main#vehicles-page #bg {
   background: url("../img/bg/vehicles_bg.jpg") no-repeat center center fixed; }
-main#cars-page .row {
+main#vehicles-page .row {
   padding-top: 20px; }
-  main#cars-page .row .panel .panel-heading {
+  main#vehicles-page .row .panel .panel-heading {
     padding: 5px; }
-    main#cars-page .row .panel .panel-heading h2 {
+    main#vehicles-page .row .panel .panel-heading h2 {
       margin: 5px 0 10px 20px; }
-    main#cars-page .row .panel .panel-heading img {
+    main#vehicles-page .row .panel .panel-heading img {
       margin: 0px; }
-  main#cars-page .row .panel .panel-footer p {
+  main#vehicles-page .row .panel .panel-footer p {
     margin: 0; }
 
 /* ART PAGE */
