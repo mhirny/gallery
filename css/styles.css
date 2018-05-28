@@ -5827,6 +5827,12 @@ main#home-page #bgmain-top, main#home-page #bg1, main#home-page #bg2, main#home-
   justify-content: center;
   align-items: center; }
 
+main#vehicles-page .row, main#art-page .row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: flex-start; }
+
 main#home-page div.panel > div:only-child {
   color: #000;
   font-size: 27px;
@@ -5874,7 +5880,7 @@ main#home-page {
     min-height: 400px; }
   main#home-page #bgmain-bottom {
     height: 100vh;
-    background-image: url("../img/bg/bgmain.jpg"); }
+    background-image: url("../img/bg/bg3.jpg"); }
   main#home-page .section-text {
     text-align: center;
     padding: 0; }
@@ -5899,6 +5905,7 @@ main#vehicles-page .row {
 main#art-page #bg {
   background: url("../img/bg/rain_bg.jpg") no-repeat center center fixed; }
 main#art-page .row {
+  align-items: center;
   padding-top: 20px; }
   main#art-page .row .panel .panel-heading {
     padding: 5px; }

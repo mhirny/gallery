@@ -32,6 +32,13 @@ $panel-opacity:             0.85;
   align-items:              center;
 }
 
+%flexbox-galery-items {
+  display:                  flex;
+  flex-wrap:                wrap;
+  justify-content:          space-evenly;
+  align-items:              flex-start
+}
+
 %fat-text {
   color:                    #000;
   font-size:                27px;
@@ -73,10 +80,6 @@ nav {
       min-width:            100px;
       &:hover {
         background:         linear-gradient(to bottom right, $navbar-default-bg 25%, darken($navbar-default-bg, 6.5%) 100%);
-        //border-radius: 5px;
-        //background: linear-gradient(to bottom right, $navbar-default-bg 25%, darken($navbar-default-bg, 20.5%) 75%, $navbar-default-bg 100%);
-        //background: radial-gradient(darken($navbar-default-bg, 6.5%), $navbar-default-bg);
-        // background: linear-gradient(to bottom right, darken($navbar-default-bg, 4.5%), $navbar-default-bg);
       }
     }
   }
@@ -104,7 +107,7 @@ main#home-page {
   #bgmain-bottom {
     @extend                 %bg-img-home, %flexbox-center-vertical;
     height:                 100vh;
-    background-image:       url('../img/bg/bgmain.jpg');
+    background-image:       url('../img/bg/bg3.jpg');
     .panel {
       @extend %panel-transparent;
     }
@@ -115,9 +118,6 @@ main#home-page {
   .section-text {
     text-align:             center;
     padding:                0;
-    h2 {
-
-    }
     p {
       padding:              5px 0 10px 0;
     }
@@ -132,6 +132,7 @@ main#vehicles-page {
   }
 
   .row {
+    @extend %flexbox-galery-items;
     padding-top:            20px;
     .panel {
       .panel-heading {
@@ -161,6 +162,8 @@ main#art-page {
   }
 
   .row {
+    @extend %flexbox-galery-items;
+    align-items:            center;
     padding-top:            20px;
     .panel {
       .panel-heading {

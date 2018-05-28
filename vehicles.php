@@ -73,45 +73,40 @@ echo '
     <div class="container">
       <div class="row">
 
-
-          <?php
-            $servername = "localhost";
-            $username = "root";
-            $password = "";
-            $db = "gallery";
-
-            $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
-
-            $sql = 'SELECT pictures.name, pictures.location, pictures.description, pictures.price
-            FROM pictures, tags
-            WHERE tags.tag = "vehicle" AND pictures.picID = tags.picID;';
-            $result = mysqli_query($conn, $sql);
-
-            if (mysqli_num_rows($result) > 0) {
-              // output data of each row
-              while($row = mysqli_fetch_assoc($result)) {
+        <?php
+          $servername = "localhost";
+          $username = "root";
+          $password = "";
+          $db = "gallery";
+          $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
+          $sql = 'SELECT pictures.name, pictures.location, pictures.description, pictures.price
+          FROM pictures, tags
+          WHERE tags.tag = "vehicle" AND pictures.picID = tags.picID;';
+          $result = mysqli_query($conn, $sql);
+          if (mysqli_num_rows($result) > 0) {
+            // output data of each row
+            while($row = mysqli_fetch_assoc($result)) {
 echo '
-              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-                <div class="panel panel-default center-block">
-                  <div class="panel-heading">
-                    <h2>'.$row["name"].'</h2>
-                    <img src="'.$row["location"].'" style="width: 100%;" class="thumbnail">
-                  </div>
-                  <div class="panel-body">
-                    '.$row["description"].'
-                  </div>
-                  <div class="panel-footer">
-                    <p class="text-right">Price: '.$row["price"].'$</p>
-                  </div>
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
+              <div class="panel panel-default center-block">
+                <div class="panel-heading">
+                  <h2>'.$row["name"].'</h2>
+                  <img src="'.$row["location"].'" style="width: 100%;" class="thumbnail">
+                </div>
+                <div class="panel-body">
+                  '.$row["description"].'
+                </div>
+                <div class="panel-footer">
+                  <p class="text-right">Price: '.$row["price"].'$</p>
                 </div>
               </div>
+            </div>
 ';
-              }
             }
-            mysqli_close($conn);
-          ?>
+          }
+          mysqli_close($conn);
+        ?>
 
-        
       </div>
     </div>
   </main>
