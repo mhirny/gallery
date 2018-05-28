@@ -56,9 +56,17 @@ function loadBasket () {
   }
   mysqli_close($conn);
 }
-if (isset($_POST['submit'])) {
+if (isset($_POST['login'])) {
   loadUser();
   loadBasket();
+  header('Location: .');
+}
+if (isset($_POST['logout'])) {
+  unset($_SESSION['user']);
+  unset($_SESSION['userID']);
+  unset($_SESSION['userPassword']);
+  unset($_SESSION['in_basket']);
+  header('Location: .');
 }
 ?>
 
@@ -84,31 +92,39 @@ if (isset($_POST['submit'])) {
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
-
           <?php
-            $user = isset($_SESSION["user"]) ? $_SESSION["user"] : "0";
-            $in_basket = isset($_SESSION['in_basket']) ? $_SESSION['in_basket'] : 0;
-            echo "<li><a href='#'>
-                    <span>$user</span>
-                  </a></li>
-                  <li><a href='#' style='padding-top:7px; padding-bottom:8px;'>";
-            if ($in_basket > 0) {
-              echo "<span class='glyphicon glyphicon-shopping-cart' style='font-size:30px;'><span
-                      class='badge' style='margin-left:-23px; margin-top: -35px; background: rgb(121,207,169);'>$in_basket</span>
-                    </span>";
+            if (isset($_SESSION['user'])) {
+              $user = $_SESSION['user'];
+              $in_basket = $_SESSION['in_basket'];
+              echo "<li style='padding:0; margin:0; height:50px;'><a style='padding:0; margin:0; href='#'><form method='post'><input href='#' type='submit' name='logout' value='Logout' style='width:100px; height: 50px; background: none; border: none;'>
+                      
+                    </input></form></a></li>
+                    <li><a href='#'>
+                      $user
+                    </a></li>
+                    <li><a href='#' style='padding-top:7px; padding-bottom:8px;'>";
+              if ($in_basket > 0) {
+                echo "<span class='glyphicon glyphicon-shopping-cart' style='font-size:30px;'><span
+                        class='badge' style='margin-left:-23px; margin-top: -35px; background: rgb(121,207,169);'>$in_basket</span>
+                      </span>";
+              } else {
+                echo "<span class='glyphicon glyphicon-shopping-cart' style='font-size:30px;'></span>";
+              };
+              echo "</a></li>";
+
             } else {
-              echo "<span class='glyphicon glyphicon-shopping-cart' style='font-size:30px;'></span>";
-            }
-            echo "</a></li>";
+              echo "<li><a href='#' data-toggle='modal' data-target='#myModal'>Login</a></li>
+                    <li><a href='#' data-toggle='modal' data-target='#myModal2'>Create account</a></li>";
+            };
           ?>
         </ul>
-
+<!--
         <ul class="nav navbar-nav navbar-right">
           <li style="padding:0; margin:0;"><div type="button" style="padding:4px 0 2px 0;" data-toggle="modal" data-target="#myModal">Login</div></li>
           <br>
           <li><a style="padding:2px;" href="#" data-toggle="modal" data-target="#myModal2">Sign in</a></li>
         </ul>
-
+-->
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container -->
   </nav>
@@ -197,7 +213,7 @@ if (isset($_POST['submit'])) {
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-          <input type="Submit" name="submit" value="Submit">
+          <button type="Submit" class="btn btn-primary" name="login" value="Login">Login</button>
         </div>
       </form>
     </div>
