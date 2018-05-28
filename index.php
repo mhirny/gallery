@@ -36,7 +36,7 @@ function loadUser () {
       }
     }
     mysqli_close($conn);
-    // echo '<script>document.getElementById("userName").innerHTML="'.$_SESSION['user'].'";</script>';
+
  }
 function loadBasket () {
   $servername = "localhost";
@@ -47,18 +47,12 @@ function loadBasket () {
   $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
 
   $userID = $_SESSION['userID'];
-  $sql = "SELECT users.*, COUNT(basket.personID) AS in_basket FROM users, basket WHERE users.personID = '$userID' AND users.personID = basket.personID;";
+  $sql = "SELECT COUNT(personID) AS in_basket FROM basket WHERE personID = '$userID';";
   $result = mysqli_query($conn, $sql);
 
   if (mysqli_num_rows($result) > 0) {
-    while($row = mysqli_fetch_assoc($result)) {
-
-      if ($row['in_basket'] > 0) { 
-        echo ' <span class="badge" style="margin-left:-23px; margin-top: -35px; background: rgb(121,207,169);">  '.$row["in_basket"].'</span>';
-      } else {
-        echo '<span class="glyphicon glyphicon-shopping-cart" style="font-size:30px;"></span>';
-      }
-    }
+    $row = mysqli_fetch_assoc($result);
+    $_SESSION['in_basket'] = $row['in_basket'];
   }
   mysqli_close($conn);
 }
@@ -92,38 +86,20 @@ if (isset($_POST['submit'])) {
         <ul class="nav navbar-nav navbar-right">
 
           <?php
-            $servername = "localhost";
-            $username = "root";
-            $password = "";
-            $db = "gallery";
-
-            $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
-
-            $sql = 'SELECT users.fname, users.lname, COUNT(basket.personID) AS in_basket FROM users, basket WHERE users.personID = "'.$_SESSION["userID"].'" AND users.personID = basket.personID;';
-            $result = mysqli_query($conn, $sql);
-
-            if (mysqli_num_rows($result) > 0) {
-              while($row = mysqli_fetch_assoc($result)) {
-                // <span class="glyphicon glyphicon-shopping-cart" style="font-size:20px;"></span>
-                // <span class="badge glyphicon glyphicon-shopping-cart" style="font-size:30px; line-height:30px;">  '.$row["in_basket"].'</span>
-                // <span>'.$row["fname"].' '.$row["lname"].'</span>
-echo '
-                <li><a href="#">
-                  <span id="userName">'.$_SESSION["user"].'</span>
-                </a></li>
-                <li><a href="#" style="padding-top:7px; padding-bottom:8px; ">
-';
-if ($row['in_basket'] > 0) {
-                  echo '<span id="basket" class="glyphicon glyphicon-shopping-cart" style="font-size:30px;"><span class="badge" style="margin-left:-23px; margin-top: -35px; background: rgb(121,207,169);">  '.$row["in_basket"].'</span></span>';
-} else {
-  echo '<span id="basket" class="glyphicon glyphicon-shopping-cart" style="font-size:30px;"></span>';
-}
-echo '
-                </a></li>
-';
-              }
+            $user = isset($_SESSION["user"]) ? $_SESSION["user"] : "0";
+            $in_basket = isset($_SESSION['in_basket']) ? $_SESSION['in_basket'] : 0;
+            echo "<li><a href='#'>
+                    <span>$user</span>
+                  </a></li>
+                  <li><a href='#' style='padding-top:7px; padding-bottom:8px;'>";
+            if ($in_basket > 0) {
+              echo "<span class='glyphicon glyphicon-shopping-cart' style='font-size:30px;'><span
+                      class='badge' style='margin-left:-23px; margin-top: -35px; background: rgb(121,207,169);'>$in_basket</span>
+                    </span>";
+            } else {
+              echo "<span class='glyphicon glyphicon-shopping-cart' style='font-size:30px;'></span>";
             }
-            mysqli_close($conn);
+            echo "</a></li>";
           ?>
         </ul>
 
