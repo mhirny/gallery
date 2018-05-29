@@ -62,11 +62,68 @@ function loadBasket () {
   mysqli_close($conn);
 }
 
+function isEmailValid ($checkEmail) {
+  $regex = '/^.*@.*\..*$/';
+  if (!preg_match($regex, $checkEmail)) {
+    $_SESSION['createErrors'] = 'ErrEmailFormat';
+  };
+}
+
+function isEmailUnused ($checkEmail) {
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $db = "gallery";
+
+  $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
+
+  $sql = "SELECT personID FROM users WHERE email = '$checkEmail';";
+  $result = mysqli_query($conn, $sql);
+
+  if (mysqli_num_rows($result) > 0) {
+    $_SESSION['createErrors'] = 'ErrEmailAlreadyUsed';
+  }
+  mysqli_close($conn);
+}
+
+function isUserNameValid ($fname, $lanme) {
+  $regex = '/^[a-zA-Z]*$/';
+  if (!preg_match($regex, $fname)) {
+    $_SESSION['createErrors'] = 'ErrFirstNameFormat';
+  };
+  if (!preg_match($regex, $lname)) {
+    $_SESSION['createErrors'] = 'ErrLastNameFormat';
+  };
+}
+
+function addUser () {
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $db = "gallery";
+
+  $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
+
+  $fname = $_POST['fname'];
+  $lname = $_POST['lname'];
+  $email = $_POST['email'];
+  $password = $_POST['password'];
+
+  $sql = "INSERT INTO users (`fname`, `lname`, `email`, `password`) VALUES ('$fname','$lname','$email','$password');";
+  if(mysqli_query($conn, $sql)) {
+    echo '<script>console.log("Debug Objects OK: ' . $sql . ' ");</script>';
+  } else {
+    $_SESSION['createErrors'] = "ErrDBInsertFailure:<br>".mysqli_error($conn);
+  };
+
+  mysqli_close($conn);
+}
+// LOGIN CANCEL
 if (isset($_POST['loginCancel'])) {
   unset($_SESSION['loginErrors']);
   header('Location: .');
 }
-
+// LOGIN
 if (isset($_POST['login'])) {
   loadUser();
   if (!isset($_SESSION['loginErrors'])) {
@@ -74,7 +131,23 @@ if (isset($_POST['login'])) {
   }
   header('Location: .');
 }
-
+// CREATE CANCEL
+if (isset($_POST['createCancel'])) {
+  unset($_SESSION['createErrors']);
+  header('Location: .');
+}
+// CREATE ACCOUNT
+if (isset($_POST['createAccount'])) {
+  unset($_SESSION['createErrors']);
+  isEmailValid($_POST['email']);
+  isEmailUnused($_POST['email']);
+  isUserNameValid($_POST['fname'], $_POST['lname']);
+  if (!isset($_SESSION['createErrors'])) {
+    addUser();
+  };
+  header('Location: .');
+}
+// LOGOUT
 if (isset($_POST['logout'])) {
   unset($_SESSION['user']);
   unset($_SESSION['userID']);
@@ -86,7 +159,7 @@ if (isset($_POST['logout'])) {
 ?>
 
 <?php
-  if (isset($_SESSION['loginErrors'])) {
+  if (isset($_SESSION['loginErrors']) || isset($_SESSION['createErrors'])) {
     echo "<body class='modal-open' style='padding-right: 17px;'>";
   } else {
     echo "<body>";
@@ -252,7 +325,8 @@ if (isset($_POST['logout'])) {
               } else if ($_SESSION['loginErrors'] == 'ErrWrongPassword') {
                 echo "<div class='alert alert-danger text-center' role='alert'>Wrong Password</div>";
               } else {
-                echo "<div class='alert alert-danger text-center' role='alert'>Unknown Login Error</div>";
+                $unknownError = $_SESSION['loginErrors'];
+                echo "<div class='alert alert-danger text-center' role='alert'>Unknown Login Error<br>$unknownError</div>";
               }
             }
           ?>
@@ -270,7 +344,13 @@ if (isset($_POST['logout'])) {
 </div>
 
 <!-- CREATE ACCOUNT Modal -->
-<div class="modal fade" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="Create account modal">
+<?php
+  if (isset($_SESSION['createErrors'])) {
+    echo "<div class='modal fade in' id='createAccountModal' tabindex='-1' role='dialog' aria-labelledby='Create account modal' style='display: block; padding-right: 17px;'>";
+  } else {
+    echo "<div class='modal fade' id='createAccountModal' tabindex='-1' role='dialog' aria-labelledby='Create account modal'>";
+  }
+?>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
 
@@ -306,10 +386,15 @@ if (isset($_POST['logout'])) {
               echo "<br>";
               if ($_SESSION['createErrors'] == 'ErrEmailFormat') {
                 echo "<div class='alert alert-danger text-center' role='alert'>Wrong email addres</div>";
-              } else if ($_SESSION['createErrors'] == 'ErrUserName') {
-                echo "<div class='alert alert-danger text-center' role='alert'>Wrong Name</div>";
+              } else if ($_SESSION['createErrors'] == 'ErrFirstNameFormat') {
+                echo "<div class='alert alert-danger text-center' role='alert'>Wrong First name</div>";
+              } else if ($_SESSION['createErrors'] == 'ErrLastNameFormat') {
+                echo "<div class='alert alert-danger text-center' role='alert'>Wrong Last name</div>";
+              } else if ($_SESSION['createErrors'] == 'ErrEmailAlreadyUsed') {
+                echo "<div class='alert alert-danger text-center' role='alert'>This email adress is already in use</div>";
               } else {
-                echo "<div class='alert alert-danger text-center' role='alert'>Unknown Create Account Error</div>";
+                $unknownError = $_SESSION['createErrors'];
+                echo "<div class='alert alert-danger text-center' role='alert'>Unknown Create Account Error!<br>$unknownError</div>";
               }
             }
           ?>
@@ -328,7 +413,7 @@ if (isset($_POST['logout'])) {
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <?php
-    if (isset($_SESSION['loginErrors'])) {
+    if (isset($_SESSION['loginErrors']) || isset($_SESSION['createErrors'])) {
       echo "<div class='modal-backdrop fade in'></div>";
     }
   ?>
