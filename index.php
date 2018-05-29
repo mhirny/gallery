@@ -9,35 +9,40 @@
   <title>Gallery | Home</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
-<body>
 
 <?php
 function loadUser () {
-    $loginEmail = $_POST['email'];
-    $loginPassword = $_POST['password'];
+  $loginEmail = $_POST['email'];
+  $loginPassword = $_POST['password'];
 
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $db = "gallery";
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $db = "gallery";
 
-    $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
+  $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
 
-    $sql = "SELECT * FROM users WHERE email='$loginEmail';"; // 'SELECT * FROM users WHERE email="'.$loginEmail.'";';
-    $result = mysqli_query($conn, $sql);
+  $sql = "SELECT * FROM users WHERE email='$loginEmail';"; // 'SELECT * FROM users WHERE email="'.$loginEmail.'";';
+  $result = mysqli_query($conn, $sql);
 
-    if (mysqli_num_rows($result) > 0) {
-      // output data of each row
-      while($row = mysqli_fetch_assoc($result)) {
-        $_SESSION['user'] = $row['fname'].' '.$row['lname'];
-        $_SESSION['userID'] = $row['personID'];
-        $_SESSION['userPassword'] = $row['password'];
-        echo '<script>console.log("Debug Objects: ' . $_SESSION['user'] . ' ");</script>';
-      }
+  if (mysqli_num_rows($result) > 0) {
+    unset($_SESSION['loginErrors']);
+    $row = mysqli_fetch_assoc($result);
+    if ($loginPassword == $row['password']) {
+      $_SESSION['user'] = $row['fname'].' '.$row['lname'];
+      $_SESSION['userID'] = $row['personID'];
+      $_SESSION['userPassword'] = $row['password'];
+      //echo '<script>console.log("Debug Objects: ' . $_SESSION['user'] . ' ");</script>';
+    } else {
+      $_SESSION['loginErrors'] = 'ErrWrongPassword';
     }
-    mysqli_close($conn);
 
- }
+  } else {
+    $_SESSION['loginErrors'] = 'ErrNoAccount';
+  };
+  mysqli_close($conn);
+}
+
 function loadBasket () {
   $servername = "localhost";
   $username = "root";
@@ -56,18 +61,36 @@ function loadBasket () {
   }
   mysqli_close($conn);
 }
-if (isset($_POST['login'])) {
-  loadUser();
-  loadBasket();
+
+if (isset($_POST['loginCancel'])) {
+  unset($_SESSION['loginErrors']);
   header('Location: .');
 }
+
+if (isset($_POST['login'])) {
+  loadUser();
+  if (!isset($_SESSION['loginErrors'])) {
+    loadBasket();
+  }
+  header('Location: .');
+}
+
 if (isset($_POST['logout'])) {
   unset($_SESSION['user']);
   unset($_SESSION['userID']);
   unset($_SESSION['userPassword']);
   unset($_SESSION['in_basket']);
+  unset($_SESSION['loginErrors']);
   header('Location: .');
 }
+?>
+
+<?php
+  if (isset($_SESSION['loginErrors'])) {
+    echo "<body class='modal-open' style='padding-right: 17px;'>";
+  } else {
+    echo "<body>";
+  }
 ?>
 
 <!-- NAV -->
@@ -131,7 +154,7 @@ if (isset($_POST['logout'])) {
 <!-- MAIN -->
 
   <main id="home-page">
-    <div id="bgmain-top" class="zflexbox-center-vertical">
+    <div id="bgmain-top">
       <div class="panel panel-default panel-transparent">
         <div class="panel-heading">
           Gallery
@@ -146,7 +169,7 @@ if (isset($_POST['logout'])) {
       </p>
     </section>
 
-    <div id= "bg1" class="flexbox-center-vertical">
+    <div id= "bg1">
       <div class="panel panel-default panel-transparent">
         <div class="panel-heading">
           Image Two Text
@@ -161,7 +184,7 @@ if (isset($_POST['logout'])) {
       </p>
     </section>
 
-    <div id="bg2" class="flexbox-center-vertical">
+    <div id="bg2">
       <div class="panel panel-default panel-transparent">
         <div class="panel-heading">
           Image Three Text
@@ -176,7 +199,7 @@ if (isset($_POST['logout'])) {
       </p>
     </section>
 
-    <div id="bgmain-bottom" class="flexbox-center-vertical">
+    <div id="bgmain-bottom">
       <div class="container">
         <div class="panel panel-default panel-transparent" >
           <div class="panel-heading">
@@ -194,24 +217,42 @@ if (isset($_POST['logout'])) {
 
 <!-- Modals -->
 <!-- LOGIN Modal -->
-<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="Login modal">
+<?php
+  if (isset($_SESSION['loginErrors'])) {
+    echo "<div class='modal fade in' id='loginModal' tabindex='-1' role='dialog' aria-labelledby='Login modal' style='display: block; padding-right: 17px;'>";
+  } else {
+    echo "<div class='modal fade' id='loginModal' tabindex='-1' role='dialog' aria-labelledby='Login modal'>";
+  }
+?>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+    <form action="index.php" method="post">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <button type="Submit" name="loginCancel" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-user"></span>  Login:</h4>
       </div>
-      <form action="index.php" method="post">
         <div class="modal-body">
 
           <input type="email" name="email" placeholder="Enter email..." style="width:100%">
           <br>
           <br>
           <input type="password" name="password" placeholder="Enter password..." style="width:100%">
+          <?php
+            if (isset($_SESSION['loginErrors'])) {
+              echo "<br>";
+              if ($_SESSION['loginErrors'] == 'ErrNoAccount') {
+                echo "<div class='alert alert-danger text-center' role='alert'>Account Don't Exist</div>";
+              } else if ($_SESSION['loginErrors'] == 'ErrWrongPassword') {
+                echo "<div class='alert alert-danger text-center' role='alert'>Wrong Password</div>";
+              } else {
+                echo "<div class='alert alert-danger text-center' role='alert'>Unknown Login Error</div>";
+              }
+            }
+          ?>
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="Submit" name="loginCancel" class="btn btn-default" data-dismiss="modal">Cancel</button>
           <button type="Submit" class="btn btn-primary" name="login" value="Login">Login</button>
         </div>
       </form>
@@ -240,5 +281,11 @@ if (isset($_POST['logout'])) {
 
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
+  <?php
+    if (isset($_SESSION['loginErrors'])) {
+      echo "<div class='modal-backdrop fade in'></div>";
+    }
+  ?>
+
 </body>
 </html>
