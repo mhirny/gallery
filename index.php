@@ -226,17 +226,24 @@ if (isset($_POST['logout'])) {
 ?>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-    <form action="index.php" method="post">
-      <div class="modal-header">
-        <button type="Submit" name="loginCancel" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-user"></span>  Login:</h4>
-      </div>
-        <div class="modal-body">
 
-          <input type="email" name="email" placeholder="Enter email..." style="width:100%">
+      <form action="index.php" method="post">
+        <div class="modal-header">
+          <button type="Submit" name="loginCancel" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-user"></span>  Login:</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="input-group">
+            <span class="input-group-addon">Login-email:</span>
+            <input type="email" name="email" class="form-control" placeholder="Enter email...">
+          </div>
           <br>
-          <br>
-          <input type="password" name="password" placeholder="Enter password..." style="width:100%">
+          <div class="input-group">
+            <span class="input-group-addon">Password:</span>
+            <input type="password" name="password" class="form-control" placeholder="Enter password...">
+          </div>
+
           <?php
             if (isset($_SESSION['loginErrors'])) {
               echo "<br>";
@@ -249,32 +256,71 @@ if (isset($_POST['logout'])) {
               }
             }
           ?>
-
         </div>
+
         <div class="modal-footer">
           <button type="Submit" name="loginCancel" class="btn btn-default" data-dismiss="modal">Cancel</button>
           <button type="Submit" class="btn btn-primary" name="login" value="Login">Login</button>
         </div>
       </form>
+
     </div>
   </div>
+
 </div>
 
 <!-- CREATE ACCOUNT Modal -->
 <div class="modal fade" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="Create account modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+
+     <form action="index.php" method="post">
+        <div class="modal-header">
+          <button type="Submit" name="createCancel" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-user"></span>  Create Account:</h4>
+        </div>
+
+        <div class="modal-body">
+          <div class="input-group">
+            <span class="input-group-addon">First name:</span>
+            <input type="text" name="fname" class="form-control" placeholder="Enter First name...">
+          </div>
+          <br>
+          <div class="input-group">
+            <span class="input-group-addon">Last name:</span>
+            <input type="text" name="lname" class="form-control" placeholder="Enter Last name...">
+          </div>
+          <br>
+          <div class="input-group">
+            <span class="input-group-addon">Login-email:</span>
+            <input type="email" name="email" class="form-control" placeholder="Enter login-email...">
+          </div>
+          <br>
+          <div class="input-group">
+            <span class="input-group-addon">Password:</span>
+            <input type="password" name="password" class="form-control" placeholder="Enter password...">
+          </div>
+
+          <?php
+            if (isset($_SESSION['createErrors'])) {
+              echo "<br>";
+              if ($_SESSION['createErrors'] == 'ErrEmailFormat') {
+                echo "<div class='alert alert-danger text-center' role='alert'>Wrong email addres</div>";
+              } else if ($_SESSION['createErrors'] == 'ErrUserName') {
+                echo "<div class='alert alert-danger text-center' role='alert'>Wrong Name</div>";
+              } else {
+                echo "<div class='alert alert-danger text-center' role='alert'>Unknown Create Account Error</div>";
+              }
+            }
+          ?>
+        </div>
+
+        <div class="modal-footer">
+          <button type="Submit" name="createCancel" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="Submit" class="btn btn-primary" name="createAccount" value="Create">Create account</button>
+        </div>
+      </form>
+
     </div>
   </div>
 </div>
