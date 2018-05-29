@@ -96,35 +96,34 @@ if (isset($_POST['logout'])) {
             if (isset($_SESSION['user'])) {
               $user = $_SESSION['user'];
               $in_basket = $_SESSION['in_basket'];
-              echo "<li style='padding:0; margin:0; height:50px;'><a style='padding:0; margin:0; href='#'><form method='post'><input href='#' type='submit' name='logout' value='Logout' style='width:100px; height: 50px; background: none; border: none;'>
-                      
-                    </input></form></a></li>
-                    <li><a href='#'>
-                      $user
-                    </a></li>
-                    <li><a href='#' style='padding-top:7px; padding-bottom:8px;'>";
+              echo "<li class='nav-post-link'>
+                      <a href='#'>
+                        <form method='post'>
+                          <input href='#' type='submit' name='logout' value='Logout'>
+                        </form>
+                      </a>
+                    </li>
+                    <li>
+                      <a href='#'>$user</a>
+                    </li>
+                    <li id='basket'>
+                      <a href='#'>";
               if ($in_basket > 0) {
-                echo "<span class='glyphicon glyphicon-shopping-cart' style='font-size:30px;'><span
-                        class='badge' style='margin-left:-23px; margin-top: -35px; background: rgb(121,207,169);'>$in_basket</span>
+                echo "<span class='glyphicon glyphicon-shopping-cart'><span
+                        class='badge'>$in_basket</span>
                       </span>";
               } else {
-                echo "<span class='glyphicon glyphicon-shopping-cart' style='font-size:30px;'></span>";
+                echo "<span class='glyphicon glyphicon-shopping-cart'></span>";
               };
               echo "</a></li>";
 
             } else {
-              echo "<li><a href='#' data-toggle='modal' data-target='#myModal'>Login</a></li>
-                    <li><a href='#' data-toggle='modal' data-target='#myModal2'>Create account</a></li>";
+              echo "<li><a href='#' data-toggle='modal' data-target='#loginModal'>Login</a></li>
+                    <li><a href='#' data-toggle='modal' data-target='#createAccountModal'>Create account</a></li>";
             };
           ?>
         </ul>
-<!--
-        <ul class="nav navbar-nav navbar-right">
-          <li style="padding:0; margin:0;"><div type="button" style="padding:4px 0 2px 0;" data-toggle="modal" data-target="#myModal">Login</div></li>
-          <br>
-          <li><a style="padding:2px;" href="#" data-toggle="modal" data-target="#myModal2">Sign in</a></li>
-        </ul>
--->
+
       </div><!-- /.navbar-collapse -->
     </div><!-- /.container -->
   </nav>
@@ -195,7 +194,7 @@ if (isset($_POST['logout'])) {
 
 <!-- Modals -->
 <!-- LOGIN Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="Login modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -220,8 +219,8 @@ if (isset($_POST['logout'])) {
   </div>
 </div>
 
-<!-- SIGNIN Modal -->
-<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<!-- CREATE ACCOUNT Modal -->
+<div class="modal fade" id="createAccountModal" tabindex="-1" role="dialog" aria-labelledby="Create account modal">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">

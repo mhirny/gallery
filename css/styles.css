@@ -5847,6 +5847,15 @@ main#home-page #bgmain-bottom .panel {
   main#home-page #bgmain-bottom .panel .panel-body {
     background: rgba(255, 255, 255, 0.85) !important; }
 
+nav .nav-post-link a {
+  padding: 0;
+  margin: 0; }
+  nav .nav-post-link a form > input {
+    min-width: 100px;
+    height: 50px;
+    background: none;
+    border: none; }
+
 body {
   margin: 0;
   padding: 0;
@@ -5864,6 +5873,15 @@ nav .nav li {
   min-width: 100px; }
   nav .nav li:hover {
     background: linear-gradient(to bottom right, #f8f8f8 25%, #e7e7e7 100%); }
+nav li#basket a {
+  padding-top: 7px;
+  padding-bottom: 8px; }
+  nav li#basket a > span {
+    font-size: 30px; }
+    nav li#basket a > span span.badge {
+      margin-left: -23px;
+      margin-top: -35px;
+      background: #79cfa9; }
 
 /* HOME PAGE */
 main#home-page {
