@@ -6,7 +6,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gallery | Art</title>
+  <title>Gallery | Boilerplate</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 
@@ -121,7 +121,7 @@ function addUser () {
 // LOGIN CANCEL
 if (isset($_POST['loginCancel'])) {
   unset($_SESSION['loginErrors']);
-  header('Location: ./art.php');
+  header('Location: ./boilerplate.php');
 }
 // LOGIN
 if (isset($_POST['login'])) {
@@ -129,12 +129,12 @@ if (isset($_POST['login'])) {
   if (!isset($_SESSION['loginErrors'])) {
     loadBasket();
   }
-  header('Location: ./art.php');
+  header('Location: ./boilerplate.php');
 }
 // CREATE CANCEL
 if (isset($_POST['createCancel'])) {
   unset($_SESSION['createErrors']);
-  header('Location: ./art.php');
+  header('Location: ./boilerplate.php');
 }
 // CREATE ACCOUNT
 if (isset($_POST['createAccount'])) {
@@ -145,7 +145,7 @@ if (isset($_POST['createAccount'])) {
   if (!isset($_SESSION['createErrors'])) {
     addUser();
   };
-  header('Location: ./art.php');
+  header('Location: ./boilerplate.php');
 }
 // LOGOUT
 if (isset($_POST['logout'])) {
@@ -156,7 +156,7 @@ if (isset($_POST['logout'])) {
   unset($_SESSION['in_basket']);
   unset($_SESSION['loginErrors']);
   unset($_SESSION['createErrors']);
-  header('Location: ./art.php');
+  header('Location: ./boilerplate.php');
 }
 ?>
 
@@ -229,44 +229,14 @@ if (isset($_POST['logout'])) {
 
 <!-- MAIN -->
 
-  <main id="art-page">
+  <main id="_name_-page">
     <div id="bg"></div>
     <div class="container">
       <div class="row">
 
-        <?php
-          $servername = "localhost";
-          $username = "root";
-          $password = "";
-          $db = "gallery";
-          $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
-          $sql = 'SELECT pictures.name, pictures.location, pictures.description, pictures.price
-            FROM pictures, tags
-            WHERE tags.tag = "art" AND pictures.picID = tags.picID;';
-          $result = mysqli_query($conn, $sql);
-          if (mysqli_num_rows($result) > 0) {
-            // output data of each row
-            while($row = mysqli_fetch_assoc($result)) {
-echo '
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-              <div class="panel panel-default center-block">
-                <div class="panel-heading">
-                  <h2>'.$row["name"].'</h2>
-                  <img src="'.$row["location"].'" style="width: 100%;" class="thumbnail">
-                </div>
-                <div class="panel-body">
-                  '.$row["description"].'
-                </div>
-                <div class="panel-footer">
-                  <p class="text-right">Price: '.$row["price"].'$</p>
-                </div>
-              </div>
-            </div>
-';
-            }
-          }
-          mysqli_close($conn);
-        ?>
+ <!--
+  Main content...
+ -->
 
       </div>
     </div>
@@ -284,7 +254,7 @@ echo '
   <div class="modal-dialog" role="document">
     <div class="modal-content">
 
-      <form action="art.php" method="post">
+      <form action="boilerplate.php" method="post">
         <div class="modal-header">
           <button type="Submit" name="loginCancel" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-user"></span>  Login:</h4>
@@ -338,7 +308,7 @@ echo '
   <div class="modal-dialog" role="document">
     <div class="modal-content">
 
-     <form action="art.php" method="post">
+     <form action="boilerplate.php" method="post">
         <div class="modal-header">
           <button type="Submit" name="createCancel" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-user"></span>  Create Account:</h4>

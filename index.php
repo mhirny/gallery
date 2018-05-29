@@ -22,7 +22,7 @@ function loadUser () {
 
   $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
 
-  $sql = "SELECT * FROM users WHERE email='$loginEmail';"; // 'SELECT * FROM users WHERE email="'.$loginEmail.'";';
+  $sql = "SELECT * FROM users WHERE email='$loginEmail';";
   $result = mysqli_query($conn, $sql);
 
   if (mysqli_num_rows($result) > 0) {
@@ -149,16 +149,19 @@ if (isset($_POST['createAccount'])) {
 }
 // LOGOUT
 if (isset($_POST['logout'])) {
+  // session_unset()
   unset($_SESSION['user']);
   unset($_SESSION['userID']);
   unset($_SESSION['userPassword']);
   unset($_SESSION['in_basket']);
   unset($_SESSION['loginErrors']);
+  unset($_SESSION['createErrors']);
   header('Location: .');
 }
 ?>
 
 <?php
+// BODY
   if (isset($_SESSION['loginErrors']) || isset($_SESSION['createErrors'])) {
     echo "<body class='modal-open' style='padding-right: 17px;'>";
   } else {
