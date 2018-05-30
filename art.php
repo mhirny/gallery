@@ -118,6 +118,29 @@ function addUser () {
 
   mysqli_close($conn);
 }
+
+function addToBasket () {
+  $servername = "localhost";
+  $username = "root";
+  $password = "";
+  $db = "gallery";
+
+  $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
+
+  $personID = $_SESSION['userID'];
+  $picID = $_POST['addToBasketPicID'];
+
+  $sql = "INSERT INTO basket (`personID`, `picID`, `amount`) VALUES ('$personID', '$picID', '1');";
+
+  if(mysqli_query($conn, $sql)) {
+    echo '<script>console.log("Debug Objects OK: ' . $sql . ' ");</script>';
+  } else {
+    $_SESSION['basketErrors'] = "ErrDBInsertFailure:<br>".mysqli_error($conn);
+  };
+
+  mysqli_close($conn);
+
+}
 // LOGIN CANCEL
 if (isset($_POST['loginCancel'])) {
   unset($_SESSION['loginErrors']);
@@ -156,6 +179,18 @@ if (isset($_POST['logout'])) {
   unset($_SESSION['in_basket']);
   unset($_SESSION['loginErrors']);
   unset($_SESSION['createErrors']);
+  unset($_SESSION['basketErrors']);
+  header('Location: ./art.php');
+}
+// ADD TO BASKET
+if (isset($_POST['addToBasket'])) {
+  addToBasket();
+  loadBasket();
+  header('Location: ./art.php');
+}
+
+if (isset($_POST['basketErrCancel'])) {
+  unset($_SESSION['basketErrors']);
   header('Location: ./art.php');
 }
 ?>
@@ -233,6 +268,17 @@ if (isset($_POST['logout'])) {
     <div id="bg"></div>
     <div class="container">
       <div class="row">
+        <?php
+          if (isset($_SESSION['basketErrors'])) {
+            $basketError = $_SESSION['basketErrors'];
+      echo "<form action='art.php' method='post' class='col-xs-12'>
+              <div class='alert alert-danger' role='alert'>
+                <button type='Submit' name='basketErrCancel' class='close' aria-label='Close'><span aria-hidden='true'>&times;</span></button>
+                  Adding to Cart error!<br>$basketError
+              </div>
+            </form>";
+          }
+        ?>
 
         <?php
           $servername = "localhost";
@@ -240,29 +286,50 @@ if (isset($_POST['logout'])) {
           $password = "";
           $db = "gallery";
           $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
-          $sql = 'SELECT pictures.name, pictures.location, pictures.description, pictures.price
-            FROM pictures, tags
-            WHERE tags.tag = "art" AND pictures.picID = tags.picID;';
+          $sql = "SELECT pictures.name, pictures.location, pictures.description, pictures.price, pictures.picID
+                  FROM pictures, tags
+                  WHERE tags.tag = 'art' AND pictures.picID = tags.picID;";
           $result = mysqli_query($conn, $sql);
           if (mysqli_num_rows($result) > 0) {
-            // output data of each row
             while($row = mysqli_fetch_assoc($result)) {
-echo '
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-              <div class="panel panel-default center-block">
-                <div class="panel-heading">
-                  <h2>'.$row["name"].'</h2>
-                  <img src="'.$row["location"].'" style="width: 100%;" class="thumbnail">
+
+              $name = $row["name"];
+              $description = $row["description"];
+              $price = $row["price"];
+              $location = $row["location"];
+              $picID = $row['picID'];
+
+              $sql = "SELECT `personID` FROM basket WHERE picID = $picID;";
+              $resultInBasket = mysqli_query($conn, $sql);
+              $alreadyInBasket = mysqli_num_rows($resultInBasket) > 0 ? true : false;
+            /*  if (mysqli_num_rows($resultInBasket) > 0) {
+                $alreadyInBasket = true;
+              } else {
+                $alreadyInBasket = false;
+              };*/
+
+        echo "<div class='col-xs-12 col-sm-6 col-md-6 col-lg-4'>
+                <div class='panel panel-default center-block' id='$name'>
+                  <div class='panel-heading'>
+                    <h2>$name</h2>
+                    <img src='$location' style='width: 100%;' class='thumbnail'>
+                  </div>
+                  <div class='panel-body'>
+                    $description
+                  </div>
+                  <div class='panel-footer'>
+                    <form action='art.php#$name' method='post'>                    
+                      <input type='hidden' name='addToBasketPicID' value='$picID'/>";
+              if (isset($_SESSION['user']) && $alreadyInBasket) {
+                echo "<button type='button' class='btn btn-success' name='alreadyInBasket' value='alreadyInBasket'>In Cart</button>";
+              } else if (isset($_SESSION['user'])) {
+                echo "<button type='Submit' class='btn btn-primary' name='addToBasket' value='addToBasket'>Add to Cart</button>";
+              };
+              echo "</form>
+                    <p>Price: $price\$</p>
+                  </div>
                 </div>
-                <div class="panel-body">
-                  '.$row["description"].'
-                </div>
-                <div class="panel-footer">
-                  <p class="text-right">Price: '.$row["price"].'$</p>
-                </div>
-              </div>
-            </div>
-';
+              </div>";
             }
           }
           mysqli_close($conn);
@@ -270,6 +337,8 @@ echo '
 
       </div>
     </div>
+ 
+
   </main>
 
 <!-- Modals -->

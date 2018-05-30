@@ -5816,7 +5816,6 @@ main#vehicles-page, main#art-page {
     left: 0;
     height: 100%;
     width: 100%;
-    background: url("../img/bg/rain_bg.jpg") no-repeat center center fixed;
     background-size: cover;
     opacity: 0.30;
     filter: blur(4px) brightness(65%); }
@@ -5923,7 +5922,6 @@ main#vehicles-page .row {
 main#art-page #bg {
   background: url("../img/bg/rain_bg.jpg") no-repeat center center fixed; }
 main#art-page .row {
-  align-items: center;
   padding-top: 20px; }
   main#art-page .row .panel .panel-heading {
     padding: 5px; }
@@ -5931,8 +5929,12 @@ main#art-page .row {
       margin: 5px 0 10px 20px; }
     main#art-page .row .panel .panel-heading img {
       margin: 0px; }
-  main#art-page .row .panel .panel-footer p {
-    margin: 0; }
+  main#art-page .row .panel .panel-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; }
+    main#art-page .row .panel .panel-footer p {
+      margin: 0; }
 
 /* Is this good to use?? */
 .section-text2 h2 {

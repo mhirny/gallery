@@ -247,22 +247,26 @@ if (isset($_POST['logout'])) {
           if (mysqli_num_rows($result) > 0) {
             // output data of each row
             while($row = mysqli_fetch_assoc($result)) {
-echo '
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-4">
-              <div class="panel panel-default center-block">
-                <div class="panel-heading">
-                  <h2>'.$row["name"].'</h2>
-                  <img src="'.$row["location"].'" style="width: 100%;" class="thumbnail">
+
+              $name = $row["name"];
+              $description = $row["description"];
+              $price = $row["price"];
+              $location = $row["location"];
+        echo "<div class='col-xs-12 col-sm-6 col-md-6 col-lg-4'>
+                <div class='panel panel-default center-block'>
+                  <div class='panel-heading'>
+                    <h2>$name</h2>
+                    <img src='$location' style='width: 100%;' class='thumbnail'>
+                  </div>
+                  <div class='panel-body'>
+                    $description
+                  </div>
+                  <div class='panel-footer'>
+                    <p class='text-right'>Price: $price\$</p>
+                  </div>
                 </div>
-                <div class="panel-body">
-                  '.$row["description"].'
-                </div>
-                <div class="panel-footer">
-                  <p class="text-right">Price: '.$row["price"].'$</p>
-                </div>
-              </div>
-            </div>
-';
+              </div>";
+              
             }
           }
           mysqli_close($conn);
