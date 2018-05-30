@@ -35,7 +35,7 @@ function loadUser () {
       //echo '<script>console.log("Debug Objects: ' . $_SESSION['user'] . ' ");</script>';
     } else {
       $_SESSION['loginErrors'] = 'ErrWrongPassword';
-    }
+    };
 
   } else {
     $_SESSION['loginErrors'] = 'ErrNoAccount';
@@ -241,7 +241,7 @@ if (isset($_POST['basketErrCancel'])) {
                       <a href='#'>$user</a>
                     </li>
                     <li id='basket'>
-                      <a href='#'>";
+                      <a href='basket.php'>";
               if ($in_basket > 0) {
                 echo "<span class='glyphicon glyphicon-shopping-cart'><span
                         class='badge'>$in_basket</span>
@@ -302,11 +302,6 @@ if (isset($_POST['basketErrCancel'])) {
               $sql = "SELECT `personID` FROM basket WHERE picID = $picID;";
               $resultInBasket = mysqli_query($conn, $sql);
               $alreadyInBasket = mysqli_num_rows($resultInBasket) > 0 ? true : false;
-            /*  if (mysqli_num_rows($resultInBasket) > 0) {
-                $alreadyInBasket = true;
-              } else {
-                $alreadyInBasket = false;
-              };*/
 
         echo "<div class='col-xs-12 col-sm-6 col-md-6 col-lg-4'>
                 <div class='panel panel-default center-block' id='$name'>

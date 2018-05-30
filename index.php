@@ -206,7 +206,7 @@ if (isset($_POST['logout'])) {
                       <a href='#'>$user</a>
                     </li>
                     <li id='basket'>
-                      <a href='#'>";
+                      <a href='basket.php'>";
               if ($in_basket > 0) {
                 echo "<span class='glyphicon glyphicon-shopping-cart'><span
                         class='badge'>$in_basket</span>
