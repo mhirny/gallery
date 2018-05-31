@@ -11,17 +11,20 @@
 </head>
 
 <?php
+if (!isset($_SESSION['createErrors'])) {
+  $_SESSION['createErrors'] = [];
+}
+
+function dbConnect ($servername = "localhost", $username = "root", $password = "", $db = "gallery") {
+  $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
+  return $conn;
+}
+
 function loadUser () {
   $loginEmail = $_POST['email'];
   $loginPassword = $_POST['password'];
 
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $db = "gallery";
-
-  $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
-
+  $conn = dbConnect();
   $sql = "SELECT * FROM users WHERE email='$loginEmail';";
   $result = mysqli_query($conn, $sql);
 
@@ -44,13 +47,7 @@ function loadUser () {
 }
 
 function loadBasket () {
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $db = "gallery";
-
-  $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
-
+  $conn = dbConnect();
   $userID = $_SESSION['userID'];
   $sql = "SELECT COUNT(personID) AS in_basket FROM basket WHERE personID = '$userID';";
   $result = mysqli_query($conn, $sql);
@@ -65,44 +62,33 @@ function loadBasket () {
 function isEmailValid ($checkEmail) {
   $regex = '/^.*@.*\..*$/';
   if (!preg_match($regex, $checkEmail)) {
-    $_SESSION['createErrors'] = 'ErrEmailFormat';
+    array_push($_SESSION['createErrors'], 'ErrEmailFormat');
   };
 }
 
 function isEmailUnused ($checkEmail) {
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $db = "gallery";
-
-  $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
-
+  $conn = dbConnect();
   $sql = "SELECT personID FROM users WHERE email = '$checkEmail';";
   $result = mysqli_query($conn, $sql);
 
   if (mysqli_num_rows($result) > 0) {
-    $_SESSION['createErrors'] = 'ErrEmailAlreadyUsed';
+    array_push($_SESSION['createErrors'], 'ErrEmailAlreadyUsed');
   }
   mysqli_close($conn);
 }
 
-function isUserNameValid ($fname, $lanme) {
+function isUserNameValid ($fname, $lname) {
   $regex = '/^[a-zA-Z]*$/';
   if (!preg_match($regex, $fname)) {
-    $_SESSION['createErrors'] = 'ErrFirstNameFormat';
+    array_push($_SESSION['createErrors'], 'ErrFirstNameFormat');
   };
   if (!preg_match($regex, $lname)) {
-    $_SESSION['createErrors'] = 'ErrLastNameFormat';
+    array_push($_SESSION['createErrors'], 'ErrLastNameFormat');
   };
 }
 
 function addUser () {
-  $servername = "localhost";
-  $username = "root";
-  $password = "";
-  $db = "gallery";
-
-  $conn = mysqli_connect($servername, $username, $password, $db) or die("Connection failed: " . mysqli_connect_error());
+  $conn = dbConnect();
 
   $fname = $_POST['fname'];
   $lname = $_POST['lname'];
@@ -113,7 +99,7 @@ function addUser () {
   if(mysqli_query($conn, $sql)) {
     echo '<script>console.log("Debug Objects OK: ' . $sql . ' ");</script>';
   } else {
-    $_SESSION['createErrors'] = "ErrDBInsertFailure:<br>".mysqli_error($conn);
+    array_push($_SESSION['createErrors'], "ErrDBInsertFailure:<br>".mysqli_error($conn));
   };
 
   mysqli_close($conn);
@@ -128,23 +114,36 @@ if (isset($_POST['login'])) {
   loadUser();
   if (!isset($_SESSION['loginErrors'])) {
     loadBasket();
-  }
+  } else {
+    $_SESSION['loginPrevVal'] = [
+      'prevEmail' => $_POST['email'],
+      'prevPassword'=> $_POST['password']
+    ];
+  };
   header('Location: .');
 }
 // CREATE CANCEL
 if (isset($_POST['createCancel'])) {
-  unset($_SESSION['createErrors']);
+  $_SESSION['createErrors'] = [];
   header('Location: .');
 }
 // CREATE ACCOUNT
 if (isset($_POST['createAccount'])) {
-  unset($_SESSION['createErrors']);
+  $_SESSION['createErrors'] = [];
   isEmailValid($_POST['email']);
   isEmailUnused($_POST['email']);
   isUserNameValid($_POST['fname'], $_POST['lname']);
   if (!isset($_SESSION['createErrors'])) {
     addUser();
   };
+  if (sizeof($_SESSION['createErrors']) > 0) {
+    $_SESSION['createPrevVal'] = [
+    'prevFname' => $_POST['fname'],
+    'prevLname' => $_POST['lname'],
+    'prevEmail' => $_POST['email'],
+    'prevPassword'=> $_POST['password']
+    ];
+  }
   header('Location: .');
 }
 // LOGOUT
@@ -155,17 +154,17 @@ if (isset($_POST['logout'])) {
   unset($_SESSION['userPassword']);
   unset($_SESSION['in_basket']);
   unset($_SESSION['loginErrors']);
-  unset($_SESSION['createErrors']);
+  $_SESSION['createErrors'] = [];
   header('Location: .');
 }
 ?>
 
 <?php
 // BODY
-  if (isset($_SESSION['loginErrors']) || isset($_SESSION['createErrors'])) {
-    echo "<body class='modal-open' style='padding-right: 17px;'>";
+  if (isset($_SESSION['loginErrors']) || sizeof($_SESSION['createErrors']) > 0) {
+    echo "<body id='home-page' class='modal-open' style='padding-right: 17px;'>";
   } else {
-    echo "<body>";
+    echo "<body id='home-page'>";
   }
 ?>
 
@@ -229,7 +228,7 @@ if (isset($_POST['logout'])) {
 
 <!-- MAIN -->
 
-  <main id="home-page">
+  <main>
     <div id="bgmain-top">
       <div class="panel panel-default panel-transparent">
         <div class="panel-heading">
@@ -303,36 +302,66 @@ if (isset($_POST['logout'])) {
   <div class="modal-dialog" role="document">
     <div class="modal-content">
 
-      <form action="index.php" method="post">
+      <form action="art.php" method="post">
         <div class="modal-header">
           <button type="Submit" name="loginCancel" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-user"></span>  Login:</h4>
         </div>
 
         <div class="modal-body">
-          <div class="input-group">
-            <span class="input-group-addon">Login-email:</span>
-            <input type="email" name="email" class="form-control" placeholder="Enter email...">
-          </div>
-          <br>
-          <div class="input-group">
-            <span class="input-group-addon">Password:</span>
-            <input type="password" name="password" class="form-control" placeholder="Enter password...">
-          </div>
+        <?php
+          if (!isset($_SESSION['loginErrors'])) {
+            echo "<div class='input-group'>
+                    <span class='input-group-addon'>Login-email:</span>
+                    <input type='email' name='email' class='form-control' placeholder='Enter email...'>
+                  </div>
+                  <br>
+                  <div class='input-group'>
+                    <span class='input-group-addon'>Password:</span>
+                    <input type='password' name='password' class='form-control' placeholder='Enter password...'>
+                  </div>";
+          } else {
+            $prevEmail = $_SESSION['loginPrevVal']['prevEmail'];
+            $prevPassword = $_SESSION['loginPrevVal']['prevPassword'];
+            $unknowmError = $_SESSION['loginErrors'];
 
-          <?php
-            if (isset($_SESSION['loginErrors'])) {
-              echo "<br>";
-              if ($_SESSION['loginErrors'] == 'ErrNoAccount') {
-                echo "<div class='alert alert-danger text-center' role='alert'>Account Don't Exist</div>";
-              } else if ($_SESSION['loginErrors'] == 'ErrWrongPassword') {
-                echo "<div class='alert alert-danger text-center' role='alert'>Wrong Password</div>";
-              } else {
-                $unknownError = $_SESSION['loginErrors'];
-                echo "<div class='alert alert-danger text-center' role='alert'>Unknown Login Error<br>$unknownError</div>";
-              }
-            }
-          ?>
+            if ($_SESSION['loginErrors'] == 'ErrNoAccount') {
+              echo "<div class='input-group'>
+                      <span class='input-group-addon'>Login-email:</span>
+                      <input type='email' name='email' class='form-control bg-danger' value='$prevEmail' placeholder='Enter email...'>
+                    </div>
+                    <span style='color: red;'>Error: Account Don't Exist</span>
+                    <br>
+                    <div class='input-group'>
+                      <span class='input-group-addon'>Password:</span>
+                      <input type='password' name='password' class='form-control' value='$prevPassword' placeholder='Enter password...'>
+                    </div>";
+            } else if ($_SESSION['loginErrors'] == 'ErrWrongPassword') {
+              echo "<div class='input-group'>
+                      <span class='input-group-addon'>Login-email:</span>
+                      <input type='email' name='email' class='form-control' value='$prevEmail' placeholder='Enter email...'>
+                    </div>
+                    <br>
+                    <div class='input-group'>
+                      <span class='input-group-addon'>Password:</span>
+                      <input type='password' name='password' class='form-control bg-danger' value='$prevPassword' placeholder='Enter password...'>
+                    </div>
+                    <span style='color: red;'>Error: Wrong Password</span>";
+            } else {
+              echo "<div class='input-group'>
+                      <span class='input-group-addon'>Login-email:</span>
+                      <input type='email' name='email' class='form-control' value='$prevEmail' placeholder='Enter email...'>
+                    </div>
+                    <br>
+                    <div class='input-group'>
+                      <span class='input-group-addon'>Password:</span>
+                      <input type='password' name='password' class='form-control' value='$prevPassword' placeholder='Enter password...'>
+                    </div>
+                    <span style='color: red;'>Error: Unknow Login Error<br>$unknowmError</span>";
+            };
+
+          };
+        ?>
         </div>
 
         <div class="modal-footer">
@@ -348,7 +377,7 @@ if (isset($_POST['logout'])) {
 
 <!-- CREATE ACCOUNT Modal -->
 <?php
-  if (isset($_SESSION['createErrors'])) {
+  if (sizeof($_SESSION['createErrors']) > 0) {
     echo "<div class='modal fade in' id='createAccountModal' tabindex='-1' role='dialog' aria-labelledby='Create account modal' style='display: block; padding-right: 17px;'>";
   } else {
     echo "<div class='modal fade' id='createAccountModal' tabindex='-1' role='dialog' aria-labelledby='Create account modal'>";
@@ -357,49 +386,104 @@ if (isset($_POST['logout'])) {
   <div class="modal-dialog" role="document">
     <div class="modal-content">
 
-     <form action="index.php" method="post">
+     <form action="art.php" method="post">
         <div class="modal-header">
           <button type="Submit" name="createCancel" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-user"></span>  Create Account:</h4>
         </div>
 
         <div class="modal-body">
-          <div class="input-group">
-            <span class="input-group-addon">First name:</span>
-            <input type="text" name="fname" class="form-control" placeholder="Enter First name...">
-          </div>
-          <br>
-          <div class="input-group">
-            <span class="input-group-addon">Last name:</span>
-            <input type="text" name="lname" class="form-control" placeholder="Enter Last name...">
-          </div>
-          <br>
-          <div class="input-group">
-            <span class="input-group-addon">Login-email:</span>
-            <input type="email" name="email" class="form-control" placeholder="Enter login-email...">
-          </div>
-          <br>
-          <div class="input-group">
-            <span class="input-group-addon">Password:</span>
-            <input type="password" name="password" class="form-control" placeholder="Enter password...">
-          </div>
-
           <?php
-            if (isset($_SESSION['createErrors'])) {
-              echo "<br>";
-              if ($_SESSION['createErrors'] == 'ErrEmailFormat') {
-                echo "<div class='alert alert-danger text-center' role='alert'>Wrong email addres</div>";
-              } else if ($_SESSION['createErrors'] == 'ErrFirstNameFormat') {
-                echo "<div class='alert alert-danger text-center' role='alert'>Wrong First name</div>";
-              } else if ($_SESSION['createErrors'] == 'ErrLastNameFormat') {
-                echo "<div class='alert alert-danger text-center' role='alert'>Wrong Last name</div>";
-              } else if ($_SESSION['createErrors'] == 'ErrEmailAlreadyUsed') {
-                echo "<div class='alert alert-danger text-center' role='alert'>This email adress is already in use</div>";
+            if (sizeof($_SESSION['createErrors']) <= 0) {
+              echo "<div class='input-group'>
+                      <span class='input-group-addon'>First name:</span>
+                      <input type='text' name='fname' class='form-control' placeholder='Enter First name...'>
+                    </div>
+                    <br>
+                    <div class='input-group'>
+                      <span class='input-group-addon'>Last name:</span>
+                      <input type='text' name='lname' class='form-control' placeholder='Enter Last name...'>
+                    </div>
+                    <br>
+                    <div class='input-group'>
+                      <span class='input-group-addon'>Login-email:</span>
+                      <input type='email' name='email' class='form-control' placeholder='Enter login-email...'>
+                    </div>
+                    <br>
+                    <div class='input-group'>
+                      <span class='input-group-addon'>Password:</span>
+                      <input type='password' name='password' class='form-control' placeholder='Enter password...'>
+                    </div>";
+
+            } else {
+              $prevFname = $_SESSION['createPrevVal']['prevFname'];
+              $prevLname = $_SESSION['createPrevVal']['prevLname'];
+              $prevEmail = $_SESSION['createPrevVal']['prevEmail'];
+              $prevPassword = $_SESSION['createPrevVal']['prevPassword'];
+
+              if (in_array('ErrFirstNameFormat', $_SESSION['createErrors'])) {
+                echo "<div class='input-group'>
+                        <span class='input-group-addon'>First name:</span>
+                        <input type='text' name='fname' class='form-control bg-danger' value='$prevFname' placeholder='Enter First name...'>
+                      </div>
+                      <span style='color: red;'>Error: Wrong First name</span>
+                      <br>";
               } else {
-                $unknownError = $_SESSION['createErrors'];
-                echo "<div class='alert alert-danger text-center' role='alert'>Unknown Create Account Error!<br>$unknownError</div>";
-              }
-            }
+                echo "<div class='input-group'>
+                        <span class='input-group-addon'>First name:</span>
+                        <input type='text' name='fname' class='form-control' value='$prevFname' placeholder='Enter First name...'>
+                      </div>
+                      <br>";
+              };
+              if (in_array('ErrLastNameFormat', $_SESSION['createErrors'])) {
+                echo "<div class='input-group'>
+                        <span class='input-group-addon'>Last name:</span>
+                        <input type='text' name='lname' class='form-control bg-danger' value='$prevLname' placeholder='Enter Last name...'>
+                      </div>
+                      <span style='color: red;'>Error: Wrong Last name</span>
+                      <br>";
+              } else {
+                echo "<div class='input-group'>
+                        <span class='input-group-addon'>Last name:</span>
+                        <input type='text' name='lname' class='form-control' value='$prevLname' placeholder='Enter Last name...'>
+                      </div>
+                      <br>";
+              };
+              if (in_array('ErrEmailFormat', $_SESSION['createErrors'])) {
+                echo "<div class='input-group'>
+                        <span class='input-group-addon'>Login-email:</span>
+                        <input type='email' name='email' class='form-control bg-danger' value='$prevEmail' placeholder='Enter login-email...'>
+                      </div>
+                      <span style='color: red;'>Error: Wrong email addres</span>
+                      <br>";
+              } else if (in_array('ErrEmailAlreadyUsed', $_SESSION['createErrors'])) {
+                echo "<div class='input-group'>
+                        <span class='input-group-addon'>Login-email:</span>
+                        <input type='email' name='email' class='form-control bg-danger' value='$prevEmail' placeholder='Enter login-email...'>
+                      </div>
+                      <span style='color: red;'>Error: This email adress is already in use</span>
+                      <br>";                
+              } else {
+                echo "<div class='input-group'>
+                        <span class='input-group-addon'>Login-email:</span>
+                        <input type='email' name='email' class='form-control' value='$prevEmail' placeholder='Enter login-email...'>
+                      </div>
+                      <br>";
+              };
+              if (in_array('ErrPasswordStrength', $_SESSION['createErrors'])) {
+                echo "<div class='input-group'>
+                        <span class='input-group-addon'>Password:</span>
+                        <input type='password' name='password' class='form-control bg-danger' value='$prevPassword' placeholder='Enter password...'>
+                      </div>
+                      <span style='color: red;'>Error: Password too weak</span>";
+              } else {
+                echo "<div class='input-group'>
+                        <span class='input-group-addon'>Password:</span>
+                        <input type='password' name='password' class='form-control' value='$prevPassword' placeholder='Enter password...'>
+                      </div>";
+              };
+
+            };
           ?>
         </div>
 
@@ -416,7 +500,7 @@ if (isset($_POST['logout'])) {
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
   <?php
-    if (isset($_SESSION['loginErrors']) || isset($_SESSION['createErrors'])) {
+    if (isset($_SESSION['loginErrors']) || sizeof($_SESSION['createErrors']) > 0) {
       echo "<div class='modal-backdrop fade in'></div>";
     }
   ?>

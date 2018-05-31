@@ -7,7 +7,3 @@ gallery
 		orderID, personID, picID, amount;
 	tags:
 		picID, tag;
-
-SELECT pictures.name, pictures.location, pictures.description, pictures.price
-FROM pictures, tags
-WHERE tags.tag = "art" AND pictures.picID = tags.picID;

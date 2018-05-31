@@ -10,20 +10,6 @@ $panel-opacity:             0.85;
   background-attachment:    fixed;
 }
 
-%bg-img-gallery {
-  position:                 relative;
-  #bg {
-    position:               absolute;
-    top:                    0;
-    left:                   0;
-    height:                 100%;
-    width:                  100%;
-    background-size:        cover;
-    opacity:                0.30;
-    filter:                 blur(4px) brightness(65%);
-  }
-}
-
 %flexbox-center-vertical {
   flex-direction:           column;
   display:                  flex;
@@ -69,11 +55,23 @@ $panel-opacity:             0.85;
   }
 }
 
+%nonInteractbtnSuccess {
+  .btn-success:hover {
+    background-color: $brand-success;
+    cursor: default;
+    border-color: $btn-success-border;
+  }
+}
+
 body {
   margin:0;
   padding:0;
   height:                   100%;
   background:               #f4f4f4;
+}
+
+.bg-danger {
+  background-color: $state-danger-bg !important;
 }
 
 /* NAVBAR */
@@ -92,6 +90,10 @@ nav {
       min-width:            100px;
       &:hover {
         background:         linear-gradient(to bottom right, $navbar-default-bg 25%, darken($navbar-default-bg, 6.5%) 100%);
+      }
+      a:focus {
+          outline: none !important;
+          box-shadow: none !important;
       }
     }
   }
@@ -115,104 +117,185 @@ nav {
 }
 
 /* HOME PAGE */
-main#home-page {
-  font-size:                16px;
-  font-weight:              600;
-  #bgmain-top {
-    @extend                 %bg-img-home, %flexbox-center-vertical;
-    height:                 calc(100vh - #{$navbar-height});
-    background-image:       url('../img/bg/bgmain.jpg');
-  }
-  #bg1 {
-    @extend                 %bg-img-home, %flexbox-center-vertical;
-    background-image:       url('../img/bg/bg1.jpg');
-    min-height:             400px;
-  }
-  #bg2 {
-    @extend                 %bg-img-home, %flexbox-center-vertical;
-    background-image:       url('../img/bg/bg2.jpg');
-    min-height:             400px;
-  }
-  #bgmain-bottom {
-    @extend                 %bg-img-home, %flexbox-center-vertical;
-    height:                 100vh;
-    background-image:       url('../img/bg/bg3.jpg');
-    .panel {
-      @extend %panel-transparent;
+body#home-page{
+  main {
+    font-size:                16px;
+    font-weight:              600;
+    #bgmain-top {
+      @extend                 %bg-img-home, %flexbox-center-vertical;
+      height:                 calc(100vh - #{$navbar-height});
+      background-image:       url('../img/bg/bgmain.jpg');
     }
-  }
-  div.panel > div:only-child {
-    @extend                 %fat-text;
-  }
-  .section-text {
-    text-align:             center;
-    padding:                0;
-    p {
-      padding:              5px 0 10px 0;
+    #bg1 {
+      @extend                 %bg-img-home, %flexbox-center-vertical;
+      background-image:       url('../img/bg/bg1.jpg');
+      min-height:             400px;
+    }
+    #bg2 {
+      @extend                 %bg-img-home, %flexbox-center-vertical;
+      background-image:       url('../img/bg/bg2.jpg');
+      min-height:             400px;
+    }
+    #bgmain-bottom {
+      @extend                 %bg-img-home, %flexbox-center-vertical;
+      height:                 100vh;
+      background-image:       url('../img/bg/bg3.jpg');
+      .panel {
+        @extend %panel-transparent;
+      }
+    }
+    div.panel > div:only-child {
+      @extend                 %fat-text;
+    }
+    .section-text {
+      text-align:             center;
+      padding:                0;
+      p {
+        padding:              5px 0 10px 0;
+      }
     }
   }
 }
-
 /* VEHICLES PAGE */
-main#vehicles-page {
-  @extend %bg-img-gallery;
-  #bg {
-    background:             url('../img/bg/vehicles_bg.jpg') no-repeat center center fixed;
-  }
+body#vehicles-page {
+  height: 100vh;
+  width: 100%;
+  background:             url('../img/bg/vehicles_bg3x.jpg') no-repeat center center fixed;
+  background-size:        cover;
+  main {
+    .row {
+      @extend %flexbox-galery-items;
+      padding-top:            20px;
+      .panel {
+        .panel-heading {
+          padding:            5px;
+          h2 {
+            margin:           5px 0 10px 20px;
+          }
+          img {
+            margin:           0px;
+          }
+        }
+        .panel-footer {
+          display:            flex;
+          justify-content:    space-between;
+          align-items:        center;
+          form {
+            @extend %nonInteractbtnSuccess;
+          }
+          p {
+            margin:           0;
+          }
+        }
+      } // end of .panel
 
-  .row {
-    @extend %flexbox-galery-items;
-    padding-top:            20px;
-    .panel {
-      .panel-heading {
-        padding:            5px;
-        h2 {
-          margin:           5px 0 10px 20px;
-        }
-        img {
-          margin:           0px;
-        }
-      }
-      .panel-footer {
-        p {
-          margin:           0;
-        }
-      }
-    } // end of .panel
-
+    }
   }
 }
 
 /* ART PAGE */
-main#art-page {
-  @extend %bg-img-gallery;
-  #bg {
-    background:             url('../img/bg/rain_bg.jpg') no-repeat center center fixed;
+body#art-page {
+  height: 100vh;
+  width: 100%;
+  background:             url('../img/bg/rain_bg3x.jpg') no-repeat center center fixed;
+  background-size:        cover;
+  main {
+    .row {
+      @extend %flexbox-galery-items;
+      padding-top:            20px;
+      .panel {
+        .panel-heading {
+          padding:            5px;
+          h2 {
+            margin:           5px 0 10px 20px;
+          }
+          img {
+            margin:           0px;
+          }
+        }
+        .panel-footer {
+          display:            flex;
+          justify-content:    space-between;
+          align-items:        center;
+          form {
+            @extend %nonInteractbtnSuccess;
+          }
+          p {
+            margin:           0;
+          }
+        }
+      } // end of .panel
+
+    }
   }
+}
 
-  .row {
-    @extend %flexbox-galery-items;
-    padding-top:            20px;
-    .panel {
-      .panel-heading {
-        padding:            5px;
-        h2 {
-          margin:           5px 0 10px 20px;
+/* BASKET PAGE */
+body#basket-page {
+  height: 100vh;
+  width: 100%;
+  background:             url('../img/bg/basket3x.jpg') no-repeat center center fixed;
+  background-size:        cover;
+  main {
+    .row {
+      padding-top:            20px;
+      #accordion {
+        .panel-heading {
+          padding: 5px 15px;
+          h4 {
+            display: flex;
+            align-items: center;
+            a {
+              display: flex;
+              justify-items: flex-start;
+              justify-self: flex-start;
+              align-items: center;
+              padding-right:20px;
+              width: 100%;
+              &:hover {
+                text-decoration: none;
+              }
+              &:focus {
+                text-decoration: none;
+              }
+              span:nth-of-type(1) {
+                width: 100px;
+                text-align: center;
+              }
+              span:nth-of-type(2) {
+                margin-left: 10px;
+                padding-left: 15px;
+              }
+              span:nth-of-type(3) {
+                margin-left: auto;
+              }
+              img {
+                height: 50px;
+              }
+            }
+            form {
+              justify-self: flex-end;
+            }
+          }
         }
-        img {
-          margin:           0px;
+        .panel-body {
+          max-height: 100px;
+          overflow: auto;
         }
+      } // accordion end
+      .well {
+        margin-top: 20px;
       }
-      .panel-footer {
-        display:            flex;
-        justify-content:    space-between;
-        align-items:        center;
-        p {
-          margin:           0;
-        }
-      }
-    } // end of .panel
-
+    } // row end
+  } // main end
+}
+/* MODAL */
+.modal {
+  .input-group {
+    width: 100%;
+    .input-group-addon {
+      width:                  105px;
+    }
   }
 }
 

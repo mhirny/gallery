@@ -5800,7 +5800,7 @@ button.close {
   .hidden-print {
     display: none !important; } }
 /* GLOBAL PLACEHOLDER SELECTORS */
-main#home-page #bgmain-top, main#home-page #bg1, main#home-page #bg2, main#home-page #bgmain-bottom {
+body#home-page main #bgmain-top, body#home-page main #bg1, body#home-page main #bg2, body#home-page main #bgmain-bottom {
   position: relative;
   opacity: 0.70;
   background-position: center;
@@ -5808,42 +5808,30 @@ main#home-page #bgmain-top, main#home-page #bg1, main#home-page #bg2, main#home-
   background-repeat: no-repeat;
   background-attachment: fixed; }
 
-main#vehicles-page, main#art-page {
-  position: relative; }
-  main#vehicles-page #bg, main#art-page #bg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    background-size: cover;
-    opacity: 0.30;
-    filter: blur(4px) brightness(65%); }
-
-main#home-page #bgmain-top, main#home-page #bg1, main#home-page #bg2, main#home-page #bgmain-bottom {
+body#home-page main #bgmain-top, body#home-page main #bg1, body#home-page main #bg2, body#home-page main #bgmain-bottom {
   flex-direction: column;
   display: flex;
   justify-content: center;
   align-items: center; }
 
-main#vehicles-page .row, main#art-page .row {
+body#vehicles-page main .row, body#art-page main .row {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: flex-start; }
 
-main#home-page div.panel > div:only-child {
+body#home-page main div.panel > div:only-child {
   color: #000;
   font-size: 27px;
   letter-spacing: 8px;
   font-weight: 900; }
 
-main#home-page #bgmain-bottom .panel {
+body#home-page main #bgmain-bottom .panel {
   background: none; }
-  main#home-page #bgmain-bottom .panel .panel-heading {
+  body#home-page main #bgmain-bottom .panel .panel-heading {
     background-color: #f5f5f5 !important;
     opacity: 0.85 !important; }
-  main#home-page #bgmain-bottom .panel .panel-body {
+  body#home-page main #bgmain-bottom .panel .panel-body {
     background: rgba(255, 255, 255, 0.85) !important; }
 
 nav .nav-post-link a {
@@ -5855,11 +5843,19 @@ nav .nav-post-link a {
     background: none;
     border: none; }
 
+body#vehicles-page main .row .panel .panel-footer form .btn-success:hover, body#art-page main .row .panel .panel-footer form .btn-success:hover {
+  background-color: #5cb85c;
+  cursor: default;
+  border-color: #4cae4c; }
+
 body {
   margin: 0;
   padding: 0;
   height: 100%;
   background: #f4f4f4; }
+
+.bg-danger {
+  background-color: #f2dede !important; }
 
 /* NAVBAR */
 nav .navbar-brand {
@@ -5872,6 +5868,9 @@ nav .nav li {
   min-width: 100px; }
   nav .nav li:hover {
     background: linear-gradient(to bottom right, #f8f8f8 25%, #e7e7e7 100%); }
+  nav .nav li a:focus {
+    outline: none !important;
+    box-shadow: none !important; }
 nav li#basket a {
   padding-top: 7px;
   padding-bottom: 8px; }
@@ -5883,58 +5882,116 @@ nav li#basket a {
       background: #79cfa9; }
 
 /* HOME PAGE */
-main#home-page {
+body#home-page main {
   font-size: 16px;
   font-weight: 600; }
-  main#home-page #bgmain-top {
+  body#home-page main #bgmain-top {
     height: calc(100vh - 50px);
     background-image: url("../img/bg/bgmain.jpg"); }
-  main#home-page #bg1 {
+  body#home-page main #bg1 {
     background-image: url("../img/bg/bg1.jpg");
     min-height: 400px; }
-  main#home-page #bg2 {
+  body#home-page main #bg2 {
     background-image: url("../img/bg/bg2.jpg");
     min-height: 400px; }
-  main#home-page #bgmain-bottom {
+  body#home-page main #bgmain-bottom {
     height: 100vh;
     background-image: url("../img/bg/bg3.jpg"); }
-  main#home-page .section-text {
+  body#home-page main .section-text {
     text-align: center;
     padding: 0; }
-    main#home-page .section-text p {
+    body#home-page main .section-text p {
       padding: 5px 0 10px 0; }
 
 /* VEHICLES PAGE */
-main#vehicles-page #bg {
-  background: url("../img/bg/vehicles_bg.jpg") no-repeat center center fixed; }
-main#vehicles-page .row {
-  padding-top: 20px; }
-  main#vehicles-page .row .panel .panel-heading {
-    padding: 5px; }
-    main#vehicles-page .row .panel .panel-heading h2 {
-      margin: 5px 0 10px 20px; }
-    main#vehicles-page .row .panel .panel-heading img {
-      margin: 0px; }
-  main#vehicles-page .row .panel .panel-footer p {
-    margin: 0; }
+body#vehicles-page {
+  height: 100vh;
+  width: 100%;
+  background: url("../img/bg/vehicles_bg3x.jpg") no-repeat center center fixed;
+  background-size: cover; }
+  body#vehicles-page main .row {
+    padding-top: 20px; }
+    body#vehicles-page main .row .panel .panel-heading {
+      padding: 5px; }
+      body#vehicles-page main .row .panel .panel-heading h2 {
+        margin: 5px 0 10px 20px; }
+      body#vehicles-page main .row .panel .panel-heading img {
+        margin: 0px; }
+    body#vehicles-page main .row .panel .panel-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center; }
+      body#vehicles-page main .row .panel .panel-footer p {
+        margin: 0; }
 
 /* ART PAGE */
-main#art-page #bg {
-  background: url("../img/bg/rain_bg.jpg") no-repeat center center fixed; }
-main#art-page .row {
-  padding-top: 20px; }
-  main#art-page .row .panel .panel-heading {
-    padding: 5px; }
-    main#art-page .row .panel .panel-heading h2 {
-      margin: 5px 0 10px 20px; }
-    main#art-page .row .panel .panel-heading img {
-      margin: 0px; }
-  main#art-page .row .panel .panel-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center; }
-    main#art-page .row .panel .panel-footer p {
-      margin: 0; }
+body#art-page {
+  height: 100vh;
+  width: 100%;
+  background: url("../img/bg/rain_bg3x.jpg") no-repeat center center fixed;
+  background-size: cover; }
+  body#art-page main .row {
+    padding-top: 20px; }
+    body#art-page main .row .panel .panel-heading {
+      padding: 5px; }
+      body#art-page main .row .panel .panel-heading h2 {
+        margin: 5px 0 10px 20px; }
+      body#art-page main .row .panel .panel-heading img {
+        margin: 0px; }
+    body#art-page main .row .panel .panel-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center; }
+      body#art-page main .row .panel .panel-footer p {
+        margin: 0; }
+
+/* BASKET PAGE */
+body#basket-page {
+  height: 100vh;
+  width: 100%;
+  background: url("../img/bg/basket3x.jpg") no-repeat center center fixed;
+  background-size: cover; }
+  body#basket-page main .row {
+    padding-top: 20px; }
+    body#basket-page main .row #accordion .panel-heading {
+      padding: 5px 15px; }
+      body#basket-page main .row #accordion .panel-heading h4 {
+        display: flex;
+        align-items: center; }
+        body#basket-page main .row #accordion .panel-heading h4 a {
+          display: flex;
+          justify-items: flex-start;
+          justify-self: flex-start;
+          align-items: center;
+          padding-right: 20px;
+          width: 100%; }
+          body#basket-page main .row #accordion .panel-heading h4 a:hover {
+            text-decoration: none; }
+          body#basket-page main .row #accordion .panel-heading h4 a:focus {
+            text-decoration: none; }
+          body#basket-page main .row #accordion .panel-heading h4 a span:nth-of-type(1) {
+            width: 100px;
+            text-align: center; }
+          body#basket-page main .row #accordion .panel-heading h4 a span:nth-of-type(2) {
+            margin-left: 10px;
+            padding-left: 15px; }
+          body#basket-page main .row #accordion .panel-heading h4 a span:nth-of-type(3) {
+            margin-left: auto; }
+          body#basket-page main .row #accordion .panel-heading h4 a img {
+            height: 50px; }
+        body#basket-page main .row #accordion .panel-heading h4 form {
+          justify-self: flex-end; }
+    body#basket-page main .row #accordion .panel-body {
+      max-height: 100px;
+      overflow: auto; }
+    body#basket-page main .row .well {
+      margin-top: 20px; }
+
+/* MODAL */
+.modal .input-group {
+  width: 100%; }
+  .modal .input-group .input-group-addon {
+    width: 105px; }
 
 /* Is this good to use?? */
 .section-text2 h2 {

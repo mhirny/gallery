@@ -32,7 +32,7 @@ CREATE TABLE `basket` (
   KEY `picID` (`picID`),
   CONSTRAINT `basket_ibfk_1` FOREIGN KEY (`personID`) REFERENCES `users` (`personID`),
   CONSTRAINT `basket_ibfk_2` FOREIGN KEY (`picID`) REFERENCES `pictures` (`picID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `basket` (
 
 LOCK TABLES `basket` WRITE;
 /*!40000 ALTER TABLE `basket` DISABLE KEYS */;
-INSERT INTO `basket` VALUES (1,1,2,1);
+INSERT INTO `basket` VALUES (1,1,2,1),(4,3,1,1),(11,3,11,1),(12,3,16,1),(13,3,9,1);
 /*!40000 ALTER TABLE `basket` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -133,4 +133,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-29 16:01:02
+-- Dump completed on 2018-05-31 14:43:10
