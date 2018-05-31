@@ -303,12 +303,12 @@ if (isset($_POST['basketErrCancel'])) {
                     $description
                   </div>
                   <div class='panel-footer'>
-                    <form action='art.php#$name' method='post'>                    
-                      <input type='hidden' name='addToBasketPicID' value='$picID'/>";
+                    <form class='formAddToBasket'>                    
+                      <input class='addToBasketPicID' type='hidden' name='addToBasketPicID' value='$picID'/>";
               if (isset($_SESSION['user']) && $alreadyInBasket) {
                 echo "<button type='button' class='btn btn-success' name='alreadyInBasket' value='alreadyInBasket'>In Cart</button>";
               } else if (isset($_SESSION['user'])) {
-                echo "<button type='Submit' class='btn btn-primary' name='addToBasket' value='addToBasket'>Add to Cart</button>";
+                echo "<button type='Submit' class='btn btn-primary addToBasket' name='addToBasket' value='addToBasket'>Add to Cart</button>";
               };
               echo "</form>
                     <p>Price: $displayPrice\$</p>
@@ -535,6 +535,7 @@ if (isset($_POST['basketErrCancel'])) {
 
   <script src="js/jquery-3.3.1.min.js"></script>
   <script src="js/bootstrap.min.js"></script>
+  <script src="js/custom.js"></script>
   <?php
     if (isset($_SESSION['loginErrors']) || sizeof($_SESSION['createErrors']) > 0) {
       echo "<div class='modal-backdrop fade in'></div>";
