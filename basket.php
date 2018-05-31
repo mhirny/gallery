@@ -172,7 +172,7 @@ if (isset($_POST['logout'])) {
   unset($_SESSION['in_basket']);
   unset($_SESSION['loginErrors']);
   $_SESSION['createErrors'] = [];
-  header('Location: ./basket.php');
+  header('Location: ./index.php');
 }
 // BASKET REMOVE
 if (isset($_POST['basketRemove'])) {
