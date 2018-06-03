@@ -337,7 +337,7 @@ if (isset($_POST['basketErrCancel'])) {
   <div class="modal-dialog" role="document">
     <div class="modal-content">
 
-      <form action="art.php" method="post">
+      <form action="vehicles.php" method="post">
         <div class="modal-header">
           <button type="Submit" name="loginCancel" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-user"></span>  Login:</h4>

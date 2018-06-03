@@ -321,15 +321,16 @@ if (isset($_POST['basketErrCancel'])) {
               $totalPrice += $price;
               $counter++;
             };
-          };
-          mysqli_close($conn);
+          
+            mysqli_close($conn);
 
-          $displayTotalPrice = number_format($totalPrice, 2);
-          echo "<div class='well'>
-                  <h4 class='text-right'>Total: $displayTotalPrice$</h4>
-                  <button class='btn btn-primary pull-right' disabled>Purchase</button>
-                  <div class='clearfix'></div>
-                </div>";
+            $displayTotalPrice = number_format($totalPrice, 2);
+            echo "<div class='well'>
+                    <h4 class='text-right'>Total: $displayTotalPrice$</h4>
+                    <button class='btn btn-primary pull-right' disabled>Purchase</button>
+                    <div class='clearfix'></div>
+                  </div>";
+          };
         }
         ?>
         </div>

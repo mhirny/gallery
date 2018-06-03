@@ -386,7 +386,7 @@ if (isset($_POST['logout'])) {
   <div class="modal-dialog" role="document">
     <div class="modal-content">
 
-     <form action="art.php" method="post">
+     <form action="index.php" method="post">
         <div class="modal-header">
           <button type="Submit" name="createCancel" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <h4 class="modal-title" id="myModalLabel"><span class="glyphicon glyphicon-user"></span>  Create Account:</h4>
