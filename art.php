@@ -43,7 +43,7 @@ basket_control("$pageName");
 
 <?php basket_error_alert("$pageName"); ?>
 
-<?php galery_panels("$pagePicturesTag"); ?>
+<?php galery_panels("$pagePicturesTag", "$pageName"); ?>
 
       </div>
     </div>

@@ -1,5 +1,5 @@
 <?php
-function galery_panels ($getTag) {
+function galery_panels ($getTag, $pageName) {
   $conn = dbConnect();
   $sql = "SELECT pictures.name, pictures.location, pictures.description, pictures.price, pictures.picID
           FROM pictures, tags
@@ -31,7 +31,7 @@ function galery_panels ($getTag) {
             <?=$description?>
           </div>
           <div class='panel-footer'>
-            <form action='art.php#<?=$picName?>' method='post'>                    
+            <form action='<?=$pageName?>#<?=$picName?>' method='post'>                    
               <input type='hidden' name='addToBasketPicID' value='<?=$picID?>'>
               <input type='hidden' name='scrollYPosition' value=''>
               <?php if (isset($_SESSION['userID']) && $alreadyInBasket) { // IF_3 ?>
