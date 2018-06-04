@@ -29,6 +29,23 @@ function addToBasket () {
   mysqli_close($conn);
 
 }
+
+function basketRemove () {
+  $conn = dbConnect();
+
+  $removePicID = $_POST['basketRemove'];
+  $userID = $_SESSION['userID'];
+
+  $sql = "DELETE FROM basket WHERE picID = $removePicID AND personID = $userID;";
+
+  if(mysqli_query($conn, $sql)) {
+    echo '<script>console.log("Debug Objects OK: ' . $sql . ' ");</script>';
+  } else {
+    $_SESSION['basketErrors'] = "ErrDBInsertFailure:<br>".mysqli_error($conn);
+  };
+
+  mysqli_close($conn);
+}
 ?>
 
 <?php
@@ -43,6 +60,12 @@ function basket_control($redirectPage) {
   if (isset($_POST['basketErrCancel'])) {
     unset($_SESSION['basketErrors']);
     header("Location: ./$redirectPage");
+  }
+  // BASKET REMOVE
+  if (isset($_POST['basketRemove'])) {
+    basketRemove();
+    loadBasket();
+    header('Location: ./basket.php');
   }
 }
 ?>
