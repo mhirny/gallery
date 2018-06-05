@@ -1,6 +1,19 @@
 <?php
 function galery_panels ($getTag, $pageName) {
   $conn = dbConnect();
+
+  if (isset($_SESSION['userID'])) { // IF_2
+    $userID = $_SESSION['userID'];
+    $inBasketList = [];
+    $sql = "SELECT `picID` FROM basket WHERE personID = $userID;";
+    $resultInBasket = mysqli_query($conn, $sql);
+    if (mysqli_num_rows($resultInBasket) > 0) {
+      while ($row = mysqli_fetch_assoc($resultInBasket)) {
+        array_push($inBasketList, $row['picID']);
+      }
+    }
+  } // IF_2 END
+
   $sql = "SELECT pictures.name, pictures.location, pictures.description, pictures.price, pictures.picID
           FROM pictures, tags
           WHERE tags.tag = '$getTag' AND pictures.picID = tags.picID;";
@@ -14,12 +27,9 @@ function galery_panels ($getTag, $pageName) {
       $location = $row["location"];
       $picID = $row['picID'];
 
-      if (isset($_SESSION['userID'])) { // IF_2
-        $userID = $_SESSION['userID'];
-        $sql = "SELECT `personID` FROM basket WHERE picID = $picID AND personID = $userID;";
-        $resultInBasket = mysqli_query($conn, $sql);
-        $alreadyInBasket = mysqli_num_rows($resultInBasket) > 0 ? true : false;
-      } // IF_2 END ?>
+      if (isset($_SESSION['userID'])) {
+        $alreadyInBasket = in_array($picID, $inBasketList) ? true : false;
+      } ?>
 
       <div class='col-xs-12 col-sm-6 col-md-6 col-lg-4'>
         <div class='panel panel-default center-block' id='<?=$picName?>'>
