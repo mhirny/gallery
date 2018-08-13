@@ -15,11 +15,11 @@ $pageName = 'vehicles.php';
 $pageBodyID = 'vehicles-page';
 $pagePicturesTag = 'vehicle';
 
-include './php_components/Db_connect.php';
-include './php_components/Navbar.php';
-include './php_components/Galery_panels.php';
-include './php_components/Cart.php';
-include './php_components/Modals.php';
+include './Components/Db_connect.php';
+include './Components/Navbar.php';
+include './Components/Galery_panels.php';
+include './Components/Cart.php';
+include './Components/Modals.php';
 
 login_modal_control("$pageName");
 create_account_modal_control("$pageName");
@@ -28,7 +28,7 @@ basket_control("$pageName");
 ?>
 
 <!-- BODY -->
-<?php modal_body_control_open_body_tag("$pageBodyID"); // BODY ?>
+<body id=<?=$pageBodyID?> <?php modal_body_control_open_body_tag();?> >
 
 <script src="js/jquery-3.3.1.min.js"></script>
 
