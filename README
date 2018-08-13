@@ -1,0 +1,20 @@
+Gallery:
+
+This project require Web server + PHP + MySQL.
+
+Copy on web server:
+  ./Components
+  ./css
+  ./fonts
+  ./img
+  ./js
+  *.php
+
+For MySQL copy database from ./_MySQL/gallery.sql
+  mysql -u root -p gallery < <path>/gallery.sql
+Default values:
+  server name   = "localhost"
+  user name     = "root"
+  password      = ""
+  database name = "gallery"
+To change those edit ./Components/Db_connect.php file.
